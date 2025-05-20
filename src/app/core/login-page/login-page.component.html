@@ -1,0 +1,126 @@
+<div class="min-h-screen flex gap-x-32 ">
+    <!-- Left side (Login form) -->
+    <div class="w-full md:w-5/12 p-20 px-24 flex flex-col justify-center space-y-4">
+
+        <div class="flex items-center space-x-3 p-3 rounded-md bg-secondarylight text-secondary-200">
+            <div><mat-icon>lock</mat-icon> </div>
+            <div>
+                <div class="font-normal text-sm ">
+                    Please check that you’re visiting the correct URL
+                </div>
+                <div class="text-[12px] text-primary whitespace-normal">
+                    Orlam.bank.com
+                </div>
+            </div>
+        </div>
+        <form [formGroup]="form">
+            <div class="border border-secondarylight shadow-2xl p-8 rounded-lg space-y-4">
+                <!-- Login info -->
+                <div>
+                    <div class="flex items-center text-primary font-semibold text-2xl mb-3 space-x-4">
+                        <img class="h-12" src="assets/images/faz-logo.png" />
+                        <div> Sign in to FAZ</div>
+                    </div>
+                    <p class="text-xs text-secondary mb-6">To sign in, please type your email and password below.</p>
+                </div>
+                <div>
+                    <label for="email" class="text-sm mb-1 block">
+                        <span class="label-text">Email Address</span>
+                    </label>
+                    <input id="email" type="email" formControlName="email"
+                        class="w-full p-3 mb-4 shadow-md focus:outline-none border border-gray-200 rounded-md"
+                        placeholder="Your email address">
+                </div>
+                <div>
+                    <label for="password" class="text-sm mb-1 block">
+                        <span class="label-text">Password</span>
+                    </label>
+                    <input id="password" type="password" formControlName="password"
+                        class="w-full p-3 mb-4 shadow-md focus:outline-none border border-gray-200 rounded-md"
+                        placeholder="Your password">
+                </div>
+                <div>
+                    <a href="#" class="text-primary text-sm mb-2 inline-block">Forgot Password? <span
+                            class="text-primary">Reset it</span></a>
+                    <button class="btn btn-primary w-full py-2 mb-4 " (click)="signin()" [disabled]="form.invalid || loading">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+                        Sign In</button>
+                </div>                
+                <p class="text-xs text-gray-600">If you don’t have an FAZ Account, <a href="#"
+                        class="text-primary">click
+                        here to register</a> and create an account with us.</p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Right side (Mockup and Image) -->
+    <div class="w-full md:w-7/12 flex items-center justify-center relative px-10">
+        <!-- Background Image -->
+        <div class="absolute inset-0 bg-no-repeat bg-contain"
+            style="background-image: url('assets/images/africa_map21.png'); z-index: 0; background-size: contain; background-position: right top;">
+        </div>
+
+        <!-- DaisyUI Mockup (increased size) -->
+        <div class="mockup-browser border border-secondary relative z-10 bg-base-100 w-full  mt-10">
+            <div class="mockup-browser-toolbar">
+                <div class="input border-base-300 border ">https://faz.intercontinaltal.bank</div>
+            </div>
+            <div class="flex ">
+                <!-- Sidebar (fixed) -->
+                <div class="hidden md:flex md:flex-col md:w-64 md:shadow-lg bg-base-100 border-r-2">
+                    <div class="p-4">
+                        <div class="text-xl font-semibold text-secondary">
+                            Dashboard
+                        </div>
+                    </div>
+                    <nav class="flex-1 p-4 space-y-2">
+                        <a href="#"
+                            class="block p-2 rounded hover:bg-secondary text-secondarylight bg-primary">Dashboard</a>
+                        <a href="#" class="block p-2 rounded hover:bg-secondary hover:text-base-100">Transactions</a>
+                        <a href="#" class="block p-2 rounded hover:bg-secondary hover:text-base-100">Accounts</a>
+                        <a href="#" class="block p-2 rounded hover:bg-secondary hover:text-base-100 ">Settings</a>
+
+                    </nav>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="flex-1 p-4">
+                    <div class="border-base-300 border-t flex flex-col items-center m-0 p-0 py-8">
+                        <!-- Dashboard Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full md:w-11/12 mb-6">
+                            <!-- Total Balance Card -->
+                            <div class="flex flex-col items-center bg-gray-100  rounded-lg shadow-md p-4">
+                                <div class="text-sm font-medium text-secondary-200">Total Balance</div>
+                                <p class="text-xl font-semibold text-gray-800">$5,230.00</p>
+                            </div>
+
+                            <!-- Recent Activity Card -->
+                            <div class="flex flex-col items-center bg-gray-100 rounded-lg shadow-md p-4">
+                                <div class="text-sm font-medium text-secondary-200">Hamster Coin</div>
+                                <p class="text-xl font-semibold text-gray-800">$1,7bn</p>
+                            </div>
+                        </div>
+
+                        <!-- Recent Transactions -->
+                        <div class="w-full md:w-11/12 ">
+                            <div class="text-lg font-medium text-secondary mb-2">Recent Transactions</div>
+                            <ul class="space-y-1">
+                                <li class="flex justify-between w-full border-b py-2">
+                                    <span class="text-secondary text-sm">Salary Payment</span>
+                                    <span class="text-success font-semibold">$2,500.00</span>
+                                </li>
+                                <li class="flex justify-between w-full border-b py-2">
+                                    <span class="text-secondary text-sm">Electricity Bill</span>
+                                    <span class="text-accent font-semibold">-$75.00</span>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

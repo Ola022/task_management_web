@@ -1,0 +1,60 @@
+<div class="flex h-screen">
+  <!-- Sidebar (fixed) for medium screens and up -->
+  <div class="hidden md:fixed md:flex md:w-64 border-r-[1px] border-secondary h-full bg-primary"> <!-- Changed from w-48 to w-56 -->
+    <!-- Sidebar content here -->
+    <div class="w-full flex flex-col  ">
+      <div class="p-4 flex justify-center cursor-pointer" routerLink="/">
+        <img class="h-20" src="assets/images/faz-logo_w.png" />
+      </div>
+      <div class="text-center text-secondarylight text-2xl font-bold px-4">FAZ BANK</div>
+
+      <!-- Navigation items -->
+      <nav class="text-base text-secondarylight font-medium flex-grow py-5">
+        <ul class="space-y-2">
+          <li class="custom-item hover:bg-secondary hover:text-neutral " routerLink="/app/dashboard">
+            <a class="flex items-center ">
+              <span class="ml-3">Dashboard</span>
+            </a>
+          </li>
+          <li class="custom-item hover:bg-secondary hover:text-secondarylight" routerLink="/app/transaction">
+            <a class="flex items-center ">
+              <span class="ml-3">Transaction</span>
+            </a>
+          </li>
+          <li class="custom-item hover:bg-secondary hover:text-secondarylight" routerLink="/app/transfer">
+            <a class="flex items-center ">
+              <span class="ml-3">Cards</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="mt-auto p-4">
+        <div class="flex items-center gap-2 cursor-pointer">
+          <img src="assets/images/faz-logo_w.png" class="w-10 h-10 rounded-full" alt="Profile">
+          <div>
+            <p class="font-semibold">John Doe</p>
+            <p class="text-xs text-gray-500">john.example.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content area -->
+  <div class="flex-1 ml-0 md:ml-64"> <!-- Changed from md:ml-48 to md:ml-56 -->
+    <div class="sticky top-0 z-10 ">
+      <app-header></app-header>
+    </div>
+    <!-- Main content (scrollable) -->
+    <div class="flex-1 p-4 overflow-auto page-padding">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleDrawer() {
+    const drawer = document.getElementById('drawer');
+    drawer.classList.toggle('hidden');
+  }
+</script>

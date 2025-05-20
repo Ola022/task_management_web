@@ -1,0 +1,43 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.text-secondarylight {
+    color: #EAEAEA !important;
+}
+
+.bg-secondarylight{
+    background-color: #EAEAEA !important;
+}
+
+.text-secondary-200 {
+    color: #1B1B1B !important;
+}
+
+.bg-secondary-200{
+    background-color: #1B1B1B !important;
+}
+
+.page-padding{    
+    @apply px-3 md:px-10 lg:px-[84px] pt-8 md:pt-10 lg:pt-24 mx-auto;
+  } 
+
+  .btn-primary {
+    @apply hover:bg-secondary text-secondarylight font-normal 
+}
+
+.btn-secondary {
+    @apply hover:bg-primary text-base-100 font-normal 
+}
+.btn-success{
+    @apply text-white 
+}
+.btn-accent{
+    @apply text-white
+}
