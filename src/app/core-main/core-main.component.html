@@ -1,29 +1,55 @@
 <div class="flex h-screen">
   <!-- Sidebar (fixed) for medium screens and up -->
-  <div class="hidden md:fixed md:flex md:w-64 border-r-[1px] border-secondary h-full bg-primary"> <!-- Changed from w-48 to w-56 -->
+  <div class="hidden md:fixed md:flex md:w-64 border-r-[1px] border-secondary h-full bg-primary">
+    <!-- Changed from w-48 to w-56 -->
     <!-- Sidebar content here -->
     <div class="w-full flex flex-col  ">
       <div class="p-4 flex justify-center cursor-pointer" routerLink="/">
         <img class="h-20" src="assets/images/faz-logo_w.png" />
       </div>
-      <div class="text-center text-secondarylight text-2xl font-bold px-4">FAZ BANK</div>
+      <div class="text-center text-secondarylight text-2xl font-bold px-1">FCI TASK <br>
+         <span class="text-base"> MANAGEMENT SYSTEM</span></div>
 
       <!-- Navigation items -->
       <nav class="text-base text-secondarylight font-medium flex-grow py-5">
         <ul class="space-y-2">
-          <li class="custom-item hover:bg-secondary hover:text-neutral " routerLink="/app/dashboard">
+          <li class="custom-item hover:bg-secondary hover:text-neutral " routerLinkActive="bg-secondary text-neutral"
+            [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/dashboard">
             <a class="flex items-center ">
+              <mat-icon>dashboard</mat-icon>
               <span class="ml-3">Dashboard</span>
             </a>
           </li>
-          <li class="custom-item hover:bg-secondary hover:text-secondarylight" routerLink="/app/transaction">
+          <li class="custom-item hover:bg-secondary hover:text-secondarylight"
+            routerLinkActive="bg-secondary text-neutral" [routerLinkActiveOptions]="{ exact: true }"
+            routerLink="/app/staffs">
             <a class="flex items-center ">
-              <span class="ml-3">Transaction</span>
+              <mat-icon>group</mat-icon>
+              <span class="ml-3">Staff</span>
             </a>
           </li>
-          <li class="custom-item hover:bg-secondary hover:text-secondarylight" routerLink="/app/transfer">
+          <li class="custom-item hover:bg-secondary hover:text-secondarylight"
+            routerLinkActive="bg-secondary text-neutral" [routerLinkActiveOptions]="{ exact: true }"
+            routerLink="/app/tasks">
             <a class="flex items-center ">
-              <span class="ml-3">Cards</span>
+              <mat-icon>assignment</mat-icon>
+              <span class="ml-3">Tasks</span>
+            </a>
+          </li>
+          <li class="custom-item hover:bg-secondary hover:text-secondarylight"
+            routerLinkActive="bg-secondary text-neutral" [routerLinkActiveOptions]="{ exact: true }"
+            routerLink="/app/meetings">
+            <a class="flex items-center ">
+              <mat-icon>video_call</mat-icon>
+              <span class="ml-3">Meeting</span>
+            </a>
+          </li>
+          <li class="custom-item hover:bg-secondary hover:text-secondarylight"
+            routerLinkActive="bg-secondary text-neutral" [routerLinkActiveOptions]="{ exact: true }"
+            routerLink="/app/events">
+            <a class="flex items-center ">
+              <mat-icon>event</mat-icon>
+              <span class="ml-3">Events</span>
             </a>
           </li>
         </ul>
@@ -46,7 +72,7 @@
       <app-header></app-header>
     </div>
     <!-- Main content (scrollable) -->
-    <div class="flex-1 p-4 overflow-auto page-padding">
+    <div class="flex-1 py-4 px-1 overflow-auto page-padding">
       <router-outlet></router-outlet>
     </div>
   </div>

@@ -8,12 +8,10 @@ import { HttpClientModule } from '@angular/common/http'; // Add this import
 import { TailwindComponentComponent } from './tailwind-component/tailwind-component.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,    
-    TailwindComponentComponent,
+    TailwindComponentComponent, 
   ],
   imports: [
     BrowserModule,

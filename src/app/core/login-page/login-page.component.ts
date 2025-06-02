@@ -24,18 +24,15 @@ export class LoginPageComponent {
   ngOnInit(): void {
     // Initialize the form with email and password fields
     this.form = this.fb.group({
-      email: ['mail2@gmail', [Validators.required, Validators.email]], // Email field with validation
+      email: ['mymail@gmail.com', [Validators.required, Validators.email]], // Email field with validation
       password: ['1111', [Validators.required, Validators.minLength(4)]], // Password with minLength validation
     });
   }
 
   login() {
-    this.loading = true;
-    // Mock login process, you can replace it with real API calls
-    setTimeout(() => {
-      console.log('Login successful:', this.form.value);
-      this.loading = false;
-      // Navigate to dashboard or another route after successful login
+    this.loading = true;    
+    setTimeout(() => {      
+      this.loading = false;      
       this.router.navigate(['/app/dashboard']);
     }, 2000);
   }
@@ -53,7 +50,8 @@ export class LoginPageComponent {
           console.log(res);
           this.loadingSpinner = false;
           if (res['message'] == Constant.SUCCESS) {
-            this.app.saveToStore(Constant.USER_INFO, res['data'].user_info)
+            this.app.snackbar.open('Welcome Back', 'Close', { duration: 3000 });
+            this.app.saveToStore(Constant.USER_INFO, res['data'])
             this.router.navigate(['/app/dashboard']);            
           } else {            
             this.errorMessage = res['data'];

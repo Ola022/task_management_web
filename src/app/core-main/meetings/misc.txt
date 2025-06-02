@@ -1,0 +1,58 @@
+<div class="max-w-6xl mx-auto p-6 space-y-8">
+
+  <!-- Section Title -->
+  <div class="text-2xl font-bold text-center mb-4">📅 Meetings Overview</div>
+
+  <!-- Tabs -->
+  <div role="tablist" class="tabs tabs-boxed justify-center">
+    <a role="tab" class="tab tab-active" (click)="selected = 'all'">All</a>
+    <a role="tab" class="tab" (click)="selected = 'upcoming'">Upcoming</a>
+    <a role="tab" class="tab" (click)="selected = 'ongoing'">Ongoing</a>
+    <a role="tab" class="tab" (click)="selected = 'completed'">Completed</a>
+  </div>
+
+  <!-- Cards -->
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
+    <div *ngFor="let meeting of filteredMeetings(selected)" class="border border-gray-300 rounded-xl p-5 bg-white shadow-md relative">
+      
+      <!-- Status -->
+      <span
+        class="absolute top-3 right-3 text-sm font-medium"
+        [ngClass]="{
+          'text-green-500': meeting.status === 'Ongoing',
+          'text-blue-500': meeting.status === 'Upcoming',
+          'text-gray-500': meeting.status === 'Completed'
+        }">
+        {{ meeting.status }}
+      </span>
+
+      <!-- Title -->
+      <div class="text-lg font-semibold italic mb-1">📌 {{ meeting.title }}</div>
+
+      <!-- Time and Date -->
+      <p class="text-base font-bold mb-2">{{ meeting.day }}, {{ meeting.time }}</p>
+
+      <!-- URL or Venue -->
+      <p class="text-sm mb-2">
+        <span class="font-semibold">URL:</span>
+        <ng-container *ngIf="meeting.type === 'online'">
+          <a [href]="meeting.url" target="_blank" class="text-blue-600 underline">{{ meeting.url }}</a>
+        </ng-container>
+        <ng-container *ngIf="meeting.type !== 'online'">
+          {{ meeting.venue }}
+        </ng-container>
+      </p>
+
+      <!-- Agenda -->
+      <p class="text-xs text-gray-500"><span class="font-semibold">Agenda:</span> {{ meeting.agenda }}</p>
+
+      <!-- Google Meet-style footer icon -->
+      <div class="flex justify-end mt-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17 10.5V6a2 2 0 0 0-2-2H5C3.9 4 3 4.9 3 6v12c0 1.1.9 2 2 2h10a2 2 0 0 0 2-2v-4.5l4 4v-11l-4 4z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,82 @@
+<div class="pageContent">
+    <div class="flex items-center justify-between">
+        <div class="text-2xl font-semibold">{{taskTitle}}</div>
+        <button mat-icon-button (click)="closeComment()">
+            <mat-icon>highlight_off</mat-icon>
+        </button>
+
+    </div>
+
+</div>
+<div class="flex flex-col md:flex-row bg-white p-6 rounded-md gap-8 w-full">
+    <!-- Left Section -->
+    <div class="flex-1 space-y-4">
+        <div class="flex">
+            <input type="text" [(ngModel)]="task.title" placeholder="Add title here..."
+                class="w-full text-3xl font-semibold focus:outline-none border-none border-transparent placeholder-gray-400" />
+            <button mat-icon-button class="ml-1 text-md" (click)="allowEdit()" *ngIf="taskID > 0">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+        <div>
+            <label class="text-sm font-medium text-gray-600 block mb-1">Description</label>
+            <textarea [(ngModel)]="task.description" rows="3" [disabled]="!isEditable"
+                class="w-full !min-h-36 border border-gray-300 rounded-md p-3 focus:outline-blue-300"
+                placeholder="Add a description..."></textarea>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+            <button mat-button color="primary" class="bg-gray-200">Attach</button>
+            <button mat-button color="primary" class="bg-gray-200">Create Subtask</button>
+
+        </div>
+
+        <!-- Story Points like board note -->
+        <div>
+            <label class="text-sm font-medium text-gray-600 block mb-1">Story Points</label>
+            <textarea [(ngModel)]="task.storyPoints" rows="3" [disabled]="!isEditable"
+                class="w-full !min-h-56 bg-yellow-50 border-l-4 border-yellow-400 rounded-md p-3 shadow-sm"
+                placeholder="Optional notes or story estimate..."></textarea>
+        </div>
+    </div>
+
+    <!-- Right Panel (Info Panel) -->
+    <div class="w-full md:w-[300px] space-y-3">
+        <!-- Label like subtitle -->
+        <div class="">
+            <label class="text-sm uppercase tracking-wider text-gray-500 mb-1 block">Label</label>
+            <div class="text-xl font-semibold text-gray-700">Task</div>
+        </div>
+        <div>
+            <label class="text-sm text-gray-600 mb-1 block">Assignee</label>
+            <input type="text" [value]="currentUserName" disabled
+                class="w-full border border-gray-200 bg-gray-100 rounded-md px-3 py-2 text-gray-500" />
+        </div>
+        <div>
+            <label class="text-sm text-gray-600 block">Reporter</label>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select [(ngModel)]="task.reporter" [disabled]="!isEditable">
+                    <mat-option *ngFor="let user of users" [value]="user">{{ user }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <label class="text-sm text-gray-600 block">Status</label>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select [(ngModel)]="task.status" [disabled]="!isEditable">
+                    <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <label class="text-sm text-gray-600 block">Priority</label>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select [(ngModel)]="task.priority" [disabled]="!isEditable">
+                    <mat-option *ngFor="let level of priorities" [value]="level">{{ level }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="pt-4">
+            <button mat-raised-button color="primary" class="w-full" [disabled]="!isEditable">{{action}}</button>
+        </div>
+    </div>
+</div>

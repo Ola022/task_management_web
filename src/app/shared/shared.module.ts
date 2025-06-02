@@ -5,12 +5,14 @@ import { materials } from './angular-material/material.modules';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { TaskCommentComponent } from '../core-main/tasks/task-comment/task-comment.component';
 
 
 
 @NgModule({
   declarations: [
-    PageLoaderComponent
+    PageLoaderComponent,
+    TaskCommentComponent,
   ],
 
   imports: [    
@@ -29,6 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
     ...materials,
     HttpClientModule,
     PageLoaderComponent,
+    TaskCommentComponent,
   ]
 })
 

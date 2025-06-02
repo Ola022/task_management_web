@@ -1,0 +1,96 @@
+<div class="pageContent">
+    <div class="flex items-center justify-between">
+        <div class="text-2xl font-semibold">{{taskTitle}}</div>
+        <button mat-icon-button (click)="closeComment()">
+            <mat-icon>highlight_off</mat-icon>
+        </button>
+
+    </div>
+
+</div>
+<div class="max-w-xl mx-auto bg-base-100 space-y-2" *ngIf="MeetID <= 0">
+
+    <!-- Title -->
+    <div>
+        <label for="title" class="label font-medium">Title</label>
+        <input id="title" type="text" [(ngModel)]="meeting.title" class="input input-bordered w-full" />
+    </div>
+
+    <!-- Organizer -->
+    <div>
+        <label for="organizer" class="label font-medium">Organizer</label>
+        <input id="organizer" type="text" [(ngModel)]="meeting.organizer" class="input input-bordered w-full" />
+    </div>
+
+    <!-- Participants -->
+    <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Participants</mat-label>
+        <mat-select [(value)]="meeting.participants" multiple (selectionChange)="toggleSelectAll()">
+            <!-- Select All / Deselect All -->
+            <mat-option [value]="allSelected ? null : 'select_all'" (click)="toggleAllSelection()"
+                [disabled]="users.length === 0">
+                {{ allSelected ? 'Deselect All' : 'Select All' }}
+            </mat-option>
+
+            <!-- Individual Users -->
+            <mat-option *ngFor="let user of users" [value]="user">
+                {{ user }}
+            </mat-option>
+
+        </mat-select>
+    </mat-form-field>
+
+
+    <!-- Date & Time -->
+    <div class="flex gap-4" style="margin-top: -8px;">
+        <div class="flex-1">
+            <label class="label font-medium">Date</label>
+            <input type="date" [(ngModel)]="meeting.dateOnly" class="input input-bordered w-full" />
+        </div>
+        <div class="flex-1">
+            <label class="label font-medium">Time</label>
+            <input type="time" [(ngModel)]="meeting.timeOnly" class="input input-bordered w-full" />
+        </div>
+    </div>
+
+    <!-- Location Type -->
+    <div class="flex gap-4">
+        <div class="flex-1">
+            <label class="label font-medium">Location Type</label>
+            <select [(ngModel)]="meeting.locationType" class="select select-bordered w-full">
+                <option value="online">Online</option>
+                <option value="offline">Offline</option>
+            </select>
+        </div>
+        <!-- URL or Venue -->
+
+        <div class="flex-1" *ngIf="meeting.locationType === 'online'">
+            <label class="label font-medium">Meeting URL</label>
+            <input type="url" [(ngModel)]="meeting.url" class="input input-bordered w-full" />
+        </div>
+        <div class="flex-1" *ngIf="meeting.locationType === 'offline'">
+            <label class="label font-medium">Venue</label>
+            <input type="text" [(ngModel)]="meeting.venue" class="input input-bordered w-full" />
+        </div>
+    </div>
+    <!-- Agenda -->
+    <div>
+        <label class="label font-medium">Agenda</label>
+        <textarea [(ngModel)]="meeting.agenda" class="textarea textarea-bordered w-full h-24"></textarea>
+    </div>
+
+    <!-- Status
+    <div>
+        <label class="label font-medium">Status</label>
+        <select [(ngModel)]="meeting.status" class="select select-bordered w-full">
+            <option>Upcoming</option>
+            <option>Ongoing</option>
+            <option>Completed</option>
+        </select>
+    </div> -->
+
+    <!-- Button -->
+    <div class="pt-2">
+        <button class="btn btn-primary w-full" (click)="submitMeeting()">Schedule Meeting</button>
+    </div>
+</div>

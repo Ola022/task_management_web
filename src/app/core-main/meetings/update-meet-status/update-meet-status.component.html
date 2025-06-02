@@ -1,0 +1,17 @@
+<div class="max-w-md bg-white p-4 rounded-xl shadow-md space-y-4">
+  <div class="text-lg font-semibold text-gray-800">Update Meeting Status</div>
+
+  <mat-form-field appearance="fill" class="w-full">
+    <mat-label>Status</mat-label>
+    <mat-select [(value)]="meeting.status">
+      <mat-option *ngFor="let status of statuses" [value]="status">
+        {{ status }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="flex justify-end gap-2">
+    <button mat-stroked-button color="warn" (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="save()">Save</button>
+  </div>
+</div>

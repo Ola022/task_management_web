@@ -1,0 +1,78 @@
+<div class="mockup-window border bg-base-200 shadow-lg">
+    <!-- Header -->
+    <div class="p-4 bg-primary text-primary-content">
+        <div class="text-lg font-bold text-center">Create User</div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-4 space-y-4">
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-error text-xs">
+            <span>{{ errorMessage }}</span>
+        </div>
+        <div [formGroup]="userForm" 
+            class="max-w-4xl mx-autop-6 space-y-6">
+            <!-- Row 1 -->
+             <div>
+                    <label class="block mb-1 font-medium">Full Name</label>
+                    <input type="text" formControlName="full_name" class="w-full input input-bordered" />
+                </div>
+            <!-- Row 2 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">                
+                <div>
+                    <label class="block mb-1 font-medium">Email</label>
+                    <input type="email" formControlName="email" class="w-full input input-bordered" />
+                </div>
+                <div>
+                    <label class="block mb-1 font-medium">Title</label>
+                    <select formControlName="title" class="w-full select select-bordered">
+                        <option  selected>Select Title</option>
+                        <option *ngFor="let t of titles">{{ t }}</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Row 3 -->            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">                
+                <div>
+                    <label class="block mb-1 font-medium">Academic Rank</label>
+                    <select formControlName="academic_rank" class="w-full select select-bordered">
+                        <option  selected>Select Rank</option>
+                        <option *ngFor="let r of ranks">{{ r }}</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-1 font-medium">Role</label>
+                    <select formControlName="role" class="w-full select select-bordered">
+                        <option  selected>Select User Role</option>
+                        <option [value]="0">Admin</option>
+                        <option [value]="1">Staff</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block mb-1 font-medium">Password</label>
+                    <input type="password" formControlName="password" class="w-full input input-bordered" />
+                </div>
+                <div>
+                    <label class="block mb-1 font-medium">Confirm Password</label>
+                    <input type="password" formControlName="confirm_password" class="w-full input input-bordered" />
+                </div>
+            </div>
+
+         
+            <!-- Submit -->
+            <!-- Footer -->
+            <div class="flex justify-end space-x-2 p-4 border-t border-gray-200">
+                <button class="btn btn-secondary" (click)="onCancel()" [disabled]="loadingSpinner">Cancel</button>
+                <button class="btn btn-primary" (click)="onSubmit()" [disabled]="loadingSpinner">
+                    <!-- Loading Spinner -->
+                    <span *ngIf="loadingSpinner" class="spinner-border spinner-sm mr-2"></span>
+                    Transfer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

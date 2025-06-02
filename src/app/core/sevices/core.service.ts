@@ -16,13 +16,13 @@ export class CoreService {
 
   SignIn(email: string, password: string ): Observable<any> {
     return this.http
-      .get<any>(this.url + `user/login?email=${email}&password=${password}`)
+      .get<any>(this.url + `users/login?email=${email}&password=${password}`)
       .pipe(catchError((err) => this.base.errorHandler(err)));
   }
 
   signUp(payload: Signup) {
     return this.http
-      .post(this.url + `user/signup`, payload)
+      .post(this.url + `users/signup`, payload)
       .pipe(catchError((err) => this.base.errorHandler(err)));
   }
 }

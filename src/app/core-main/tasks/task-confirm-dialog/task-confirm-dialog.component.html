@@ -1,0 +1,17 @@
+<div class="p-6 max-w-sm text-center space-y-4">
+    <div class="text-lg font-semibold text-gray-800">Move Task</div>
+    <div class="text-sm text-gray-600">Are you sure you want to move this task to the
+        <span class="font-semibold !text-base uppercase" [ngClass]="{              
+              'text-gray-400': info.moveto === 'created',
+              'text-blue-400': info.moveto === 'progress',
+              'text-yellow-600': info.moveto === 'blocked',
+              'text-purple-400': info.moveto === 'confirm',
+              'text-green-300': info.moveto === 'completed'
+            }">
+            {{info.moveto}}</span> stage?
+        </div>
+    <div class="flex justify-end gap-3 mt-6">
+        <button mat-raised-button class="btn-ghost" (click)="onCancel()">Cancel</button>
+        <button mat-raised-button class=" btn-primary" (click)="onConfirm()">Yes, Move</button>
+    </div>
+</div>

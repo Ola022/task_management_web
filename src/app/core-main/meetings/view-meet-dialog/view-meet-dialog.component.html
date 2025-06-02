@@ -1,0 +1,68 @@
+
+<div class="max-w-3xl rounded-xl shadow-md p-6 space-y-6 text-sm">
+
+  <!-- Title and Status -->
+  <div class="flex items-center justify-between">
+    <div class="text-2xl font-semibold text-gray-800">{{ meeting.title }}</div>
+    <span
+      class="text-xs px-3 py-1 rounded-full font-medium"
+      [ngClass]="{
+        'bg-blue-100 text-blue-700': meeting.status === 'Upcoming',
+        'bg-green-100 text-green-700': meeting.status === 'Ongoing',
+        'bg-gray-200 text-gray-600': meeting.status === 'Completed'
+      }">
+      {{ meeting.status }}
+    </span>
+  </div>
+
+  <!-- Organizer & Participants -->
+  <div class="grid sm:grid-cols-2 gap-6">
+    <div>
+      <div class="text-gray-500 font-medium mb-1">Organizer</div>
+      <div class="text-gray-800">{{ meeting.organizer }}</div>
+    </div>
+    <div>
+      <div class="text-gray-500 font-medium mb-1">Participants</div>
+      <div class="flex flex-wrap gap-2">
+        <span *ngFor="let user of meeting.participants"
+              class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full">
+          {{ user }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agenda -->
+  <div>
+    <div class="text-gray-500 font-medium mb-1">Agenda</div>
+    <div class="text-gray-800 whitespace-pre-wrap">
+      {{ meeting.agenda }}
+    </div>
+  </div>
+
+  <!-- Date and Time -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div>
+      <div class="text-gray-500 font-medium mb-1">Date</div>
+      <div class="text-gray-800">{{ meeting.dateOnly }}</div>
+    </div>
+    <div>
+      <div class="text-gray-500 font-medium mb-1">Time</div>
+      <div class="text-gray-800">{{ meeting.timeOnly | date: 'shortTime' }}</div>
+    </div>
+  </div>
+
+  <!-- Location or URL -->
+  <div>
+    <div class="text-gray-500 font-medium mb-1">
+      {{ meeting.locationType === 'online' ? 'Meeting URL' : 'Venue' }}
+    </div>
+    <div class="text-blue-600 hover:underline" *ngIf="meeting.locationType === 'online'">
+      <a [href]="meeting.url" target="_blank">{{ meeting.url }}</a>
+    </div>
+    <div class="text-gray-800" *ngIf="meeting.locationType !== 'online'">
+      {{ meeting.venue || 'Not specified' }}
+    </div>
+  </div>
+
+</div>

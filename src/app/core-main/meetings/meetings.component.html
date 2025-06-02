@@ -1,0 +1,93 @@
+<div class="max-w-7xl mx-auto p-6 space-y-8">
+    <div class="flex flex-wrap items-center justify-between mb-4 gap-4">
+        <!-- Tabs -->
+        <div class="tabs tabs-boxed">
+            <a class="tab" [class.tab-active]="selectedTab === 'All'" (click)="selectedTab = 'All'">All</a>
+            <a class="tab" [class.tab-active]="selectedTab === 'Upcoming'"
+                (click)="selectedTab = 'Upcoming'">Upcoming</a>
+            <a class="tab" [class.tab-active]="selectedTab === 'Ongoing'" 
+                (click)="selectedTab = 'Ongoing'">Ongoing</a>
+            <a class="tab" [class.tab-active]="selectedTab === 'Completed'"
+                (click)="selectedTab = 'Completed'">Completed</a>
+            <a class="tab" [class.tab-active]="selectedTab === 'Cancelled'"
+                (click)="selectedTab = 'Cancelled'">Cancelled</a>
+        </div>
+
+        <!-- Right-side items (Date Filter & Schedule Button) -->
+        <div class="flex items-center gap-3">
+            <!-- Date Filter -->
+            <input type="date" [(ngModel)]="selectedDate" class="input input-bordered max-w-xs" />
+
+            <!-- Schedule Meeting Button -->
+            <button class="btn btn-primary" (click)="openAddMeetNav()">Schedule Meeting</button>
+        </div>
+    </div>
+    <!-- MEETING CARDS -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ng-container *ngFor="let meeting of filteredMeeting()">
+            <div class=" border border-gray-200 rounded-md p-3 bg-base-100 shadow-md flex flex-col justify-between h-full"
+                [ngClass]="{
+                            'shadow-green-300': meeting.status === 'Ongoing',
+                            'shadow-blue-300': meeting.status === 'Upcoming',
+                            'shadow-gray-300': meeting.status === 'Completed'
+                        }">
+                <div class="flex justify-between items-center">
+                    <!-- Title -->
+                    <div class="text-sm font-medium italic">
+                        {{ meeting.title }}
+                    </div>
+
+                    <!-- Status + Menu -->
+                    <div class="flex items-center gap-2 text-xs font-semibold" [ngClass]="{
+                            'text-green-600': meeting.status === 'Ongoing',
+                            'text-blue-600': meeting.status === 'Upcoming',
+                            'text-gray-500': meeting.status === 'Completed'
+                        }">
+                        {{ meeting.status }}
+                        <button mat-icon-button [matMenuTriggerFor]="menuCreated">
+                            <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
+                        </button>
+
+                        <mat-menu #menuCreated="matMenu">
+                            <button mat-menu-item (click)="openViewDialog(meeting)">View Detail</button>
+                            <button mat-menu-item (click)="editMeet(meeting)">Edit</button>
+                            <button mat-menu-item (click)="openUpdateStatusDialog(meeting)">Update Status</button>
+                            <button mat-menu-item (click)="openComment(meeting)">Comment</button>
+                            <button mat-menu-item>Delete</button>
+                        </mat-menu>
+                    </div>
+                </div>
+
+                <div class="text-center my-4">
+                    <p class="text-base font-semibold">{{ meeting.date | date: 'fullDate' }} {{ meeting.date | date:
+                        'shortTime' }}</p>
+                </div>
+                <!-- Location Info -->
+                <div class="mt-auto mb-4 text-sm text-gray-600 border-gray-200">
+
+                    <ng-container *ngIf="meeting.locationType === 'online'">
+                        <span class="font-medium">URL: </span>
+                        <a [href]="meeting.url" target="_blank" class="text-blue-600 underline">{{ meeting.url }}</a>
+                    </ng-container>
+                    <ng-container *ngIf="meeting.locationType === 'offline'">
+                        <span class="font-medium">Location:</span> {{ meeting.venue }}
+                    </ng-container>
+                </div>
+                <!--<p class="text-sm mt-4 border-t">
+                    <span class="font-medium">Agenda:</span> {{ meeting.agenda }}
+                </p> -->
+            </div>
+        </ng-container>
+    </div>
+</div>
+<!-- Add Comment -->
+<div *ngIf="openSideNav" class="custom-sidenav-addMeetEvent">
+    <app-add-meets class="full-width" (close)="closeAddMeetNav()" [MeetID]="selectedMeetsID"
+        class="full-width"></app-add-meets>
+</div>
+
+<!-- Add Comment -->
+<div *ngIf="openCommentSideNav" class="custom-sidenav-comment">
+    <app-task-comment class="full-width" (close)="closeCommentSidenav()" [taskID]="selectedMeetsID"
+        class="full-width"></app-task-comment>
+</div>

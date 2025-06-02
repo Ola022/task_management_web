@@ -25,27 +25,43 @@ export const coreMainRoutes: Routes = [
             (m) => m.DashboardModule
           ),
       },
+     
       {
-        path: 'transaction',
-        loadChildren: () =>
-          import('./transaction/transaction.module').then(
-            (m) => m.TransactionModule
-          ),
-      },
+         path: 'staffs',
+         loadChildren: () =>
+           import('./staffs/staffs.module').then(
+             (m) => m.StaffsModule
+           ),
+     },
       {
-        path: 'transfer',
-        loadChildren: () =>
-          import('./cards/cards.module').then(
-            (m) => m.CardsModule
-          ),
-      },
+         path: 'tasks',
+         loadChildren: () =>
+           import('./tasks/tasks.module').then(
+             (m) => m.TasksModule
+           ),
+     },
+      {
+         path: 'meetings',
+         loadChildren: () =>
+           import('./meetings/meetings.module').then(
+             (m) => m.MeetingsModule
+           ),
+     },
+      {
+         path: 'events',
+         loadChildren: () =>
+           import('./events/events.module').then(
+             (m) => m.EventsModule
+           ),
+     },
     ]
   }, 
 ];
 
 @NgModule({
   declarations: [    
-    CoreMainComponent, HeaderComponent, TransferComponent, AirtimeComponent, DataComponent, PayBillComponent, WithdrawComponent, DepositComponent
+    CoreMainComponent, HeaderComponent, TransferComponent, AirtimeComponent, DataComponent, PayBillComponent, 
+    WithdrawComponent, DepositComponent
   ],
   imports: [
     CommonModule,

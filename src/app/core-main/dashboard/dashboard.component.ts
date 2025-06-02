@@ -78,47 +78,47 @@ export class DashboardComponent {
   checkBalance() {
     this.loadingSpinner = true;
     this.errorMessage = '';
-    this.app.coreMainService.checkBalance(this.userId)
-      .subscribe({
-        next: (res: any) => {
-          console.log(res);
-          this.loadingSpinner = false;
-          if (res['message'] == Constant.SUCCESS) {
-            this.balance = res['data'].balance;
-            this.fetchTransactions()
-          } else {
-            this.balance = 0
-            this.errorMessage = res['data'];
-          }
-        },
-        error: (error) => {
-          this.loadingSpinner = false;
-          this.errorMessage = Constant.ERROR_MSG;
-        }
-      });
+    // this.app.coreMainService.checkBalance(this.userId)
+    //   .subscribe({
+    //     next: (res: any) => {
+    //       console.log(res);
+    //       this.loadingSpinner = false;
+    //       if (res['message'] == Constant.SUCCESS) {
+    //         this.balance = res['data'].balance;
+    //         this.fetchTransactions()
+    //       } else {
+    //         this.balance = 0
+    //         this.errorMessage = res['data'];
+    //       }
+    //     },
+    //     error: (error) => {
+    //       this.loadingSpinner = false;
+    //       this.errorMessage = Constant.ERROR_MSG;
+    //     }
+    //   });
 
   }
 
   fetchTransactions(): void {
     this.loadingSpinner = true;
     this.errorMessage = '';
-    this.app.coreMainService.getTransactions(this.userId)
-      .subscribe({
-        next: (res: any) => {          
-          this.loadingSpinner = false;
-          if (res['message'] == Constant.SUCCESS) {            
-            this.transactions = res['data'].slice(-3).reverse(); // Slices the last 3 items
+    // this.app.coreMainService.getTransactions(this.userId)
+    //   .subscribe({
+    //     next: (res: any) => {          
+    //       this.loadingSpinner = false;
+    //       if (res['message'] == Constant.SUCCESS) {            
+    //         this.transactions = res['data'].slice(-3).reverse(); // Slices the last 3 items
           
-          } else {
-            this.transactions = [];
-            this.errorMessage = res['data'];
-          }
-        },
-        error: (error) => {
-          this.loadingSpinner = false;
-          this.errorMessage = Constant.ERROR_MSG;
-        }
-      });
+    //       } else {
+    //         this.transactions = [];
+    //         this.errorMessage = res['data'];
+    //       }
+    //     },
+    //     error: (error) => {
+    //       this.loadingSpinner = false;
+    //       this.errorMessage = Constant.ERROR_MSG;
+    //     }
+    //   });
   }
   
 
@@ -205,24 +205,24 @@ export class DashboardComponent {
       this.errorMessage = 'Please enter a valid amount';
       return;
     }
-    this.loadingSpinner = true;
+    
     this.errorMessage = '';
-    this.app.coreMainService.deposit(this.userId, amount)
-      .subscribe({
-        next: (res: any) => {
-          console.log(res);
-          this.loadingSpinner = false;
-          if (res['message'] == Constant.SUCCESS) {
-            this.successMessage = 'Deposit successful';
-          } else {
-            this.errorMessage = res['data'];
-          }
-        },
-        error: (error) => {
-          this.loadingSpinner = false;
-          this.errorMessage = Constant.ERROR_MSG;
-        }
-      });
+    // this.app.coreMainService.deposit(this.userId, amount)
+    //   .subscribe({
+    //     next: (res: any) => {
+    //       console.log(res);
+    //       this.loadingSpinner = false;
+    //       if (res['message'] == Constant.SUCCESS) {
+    //         this.successMessage = 'Deposit successful';
+    //       } else {
+    //         this.errorMessage = res['data'];
+    //       }
+    //     },
+    //     error: (error) => {
+    //       this.loadingSpinner = false;
+    //       this.errorMessage = Constant.ERROR_MSG;
+    //     }
+    //   });
   }
   
 
