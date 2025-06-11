@@ -3,11 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppService } from '../../app.service';
 import { Constant } from '../../resources/constants';
 import { TransferComponent } from '../actions-comp/transfer/transfer.component';
-import { DataComponent } from '../actions-comp/data/data.component';
-import { PayBillComponent } from '../actions-comp/pay-bill/pay-bill.component';
-import { AirtimeComponent } from '../actions-comp/airtime/airtime.component';
-import { WithdrawComponent } from '../actions-comp/withdraw/withdraw.component';
-import { DepositComponent } from '../actions-comp/deposit/deposit.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -53,28 +48,23 @@ export class DashboardComponent {
   }
     
   copyToClipboard() {
-    navigator.clipboard.writeText(this.userInfo.account_number)
-      .then(() => {
-        console.log('Copied to clipboard:', this.userInfo.account_number);
-
-        // Show the snackbar notification
-        this.app.snackbar.open('Account number copied to clipboard!', 'Close', {
-          duration: 3000, // Duration in milliseconds (3 seconds here)
-          verticalPosition: 'bottom', // You can use 'top' or 'bottom'
-          horizontalPosition: 'center' // You can use 'start', 'center', 'end', 'left', or 'right'
-        });
-      })
-      .catch(err => {
-        console.error('Failed to copy:', err);
-
-        // Optionally show an error message if the copy fails
-        this.app.snackbar.open('Failed to copy account number. Please try again.', 'Close', {
-          duration: 3000,
-          verticalPosition: 'bottom',
-          horizontalPosition: 'center'
-        });
-      });
+    
   }
+  stats = {
+  created: 10,
+  inProgress: 6,
+  blocked: 1,
+  toConfirm: 3,
+  completed: 8,
+};
+
+recentActivities = [
+  { user: 'Jane', action: 'created', task: 'Task A', time: '2 mins ago' },
+  { user: 'John', action: 'moved', task: 'Task B to In Progress', time: '10 mins ago' },
+  { user: 'Mary', action: 'completed', task: 'Task C', time: '1 hour ago' },
+  { user: 'Alex', action: 'blocked', task: 'Task D', time: 'Yesterday' },
+];
+
   checkBalance() {
     this.loadingSpinner = true;
     this.errorMessage = '';
@@ -131,70 +121,6 @@ export class DashboardComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // Perform an action like checking balance
-        this.checkBalance();
-      }
-    });
-  }
-
-  openAirtimeDialog() {
-    const dialogRef = this.dialog.open(AirtimeComponent, {
-      width: '400px',
-      data: this.userId ,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.checkBalance();
-      }
-    });
-  }
-
-  openDataDialog() {
-    const dialogRef = this.dialog.open(DataComponent, {
-      width: '400px',
-      data: this.userId,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.checkBalance();
-      }
-    });
-  }
-  openWithdrawDialog() {
-    const dialogRef = this.dialog.open(WithdrawComponent, {
-      width: '400px',
-      data: this.userId,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.checkBalance();
-      }
-    });
-  }
-
-  openDepositDialog() {
-    const dialogRef = this.dialog.open(DepositComponent, {
-      width: '400px',
-      data: this.userId,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.checkBalance();
-      }
-    });
-  }
-
-  openPayBillDialog() {
-    const dialogRef = this.dialog.open(PayBillComponent, {
-      width: '400px',
-      data: this.userId,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
         this.checkBalance();
       }
     });

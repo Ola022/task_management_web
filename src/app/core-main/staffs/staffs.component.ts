@@ -76,9 +76,7 @@ openCreate(){
         next: (res: any) => {
           this.loadingSpinner = false;
           if (res['message'] == Constant.SUCCESS) {
-            this.users = res['data']
-           
-
+            this.users = res['data']           
           } else {
             this.users = [];
             this.errorMessage = res['data'];

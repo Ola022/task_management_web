@@ -39,6 +39,10 @@ getMyTasks(userId: number): Observable<any> {
   return this.http.get<any>(`${this.url}task/mine/${userId}`)
     .pipe(catchError(err => this.base.errorHandler(err)));
 }
+getAllTasks(userId: number): Observable<any> {
+  return this.http.get<any>(`${this.url}task/all/${userId}`)
+    .pipe(catchError(err => this.base.errorHandler(err)));
+}
 
 // 4. Get tasks by type
 getTasksByType(taskType: string, userId: number): Observable<any> {
@@ -76,15 +80,14 @@ deleteTask(taskId: number, userId: number): Observable<any> {
     .pipe(catchError(err => this.base.errorHandler(err)));
 }
 
-// 10. Add comment to task
 addCommentToTask(taskId: number, userId: number, commentText: string): Observable<any> {
+  const params = new HttpParams().set('comment_text', commentText);
   return this.http.post<any>(
     `${this.url}task/comment/add/${taskId}/${userId}`,
     {},
-    { params: { comment_text: commentText } }
+    { params }
   ).pipe(catchError(err => this.base.errorHandler(err)));
 }
-
 // 11. Get comments for a task
 getCommentsForTask(taskId: number, userId: number): Observable<any> {
   return this.http.get<any>(`${this.url}task/comment/all/${taskId}/${userId}`)

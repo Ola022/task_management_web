@@ -1,111 +1,64 @@
-<div class="min-h-screenn space-y-7">
-    <!-- Balance Cards in ATM Style -->
-    <div class="grid md:grid-cols-2 gap-12 ">
-        <!-- ATM Card 1: Current Balance -->
-        <div class="shadow-md rounded-lg p-6 atm-card space-y-8">
-            <!-- Top Row: Title and Last Updated Time -->
-            <div class="flex justify-between items-center">
-                <div class="font-medium text-primary-content">Current Balance</div>
-                <div class="text-sm text-secondarylight"></div>
-            </div>
-            
-            <!-- Balance Amount and Buttons -->
-            <div class="flex justify-between items-center mt-4">
-                <p class="text-xl font-bold">$ {{balance | number: ".2-2"}}</p>
-                <div class="flex space-x-2">
-                    <button (click)="openDepositDialog()" class="btn btn-sm btn-success" >Deposit</button>                    
-                </div>
-            </div>
-        </div>
-    
-        <!-- ATM Card 3: Credit Balance -->
-        <div class="shadow-md rounded-lg p-6 atm-card space-y-8">
-            <!-- Top Row: Title and Last Updated Time -->
-            <div class="flex justify-between items-center">
-                <div class="font-medium text-primary-content">FAZ Bank</div>
-                <div class="text-sm text-secondarylight"></div>
-            </div>
-            
-            <!-- Balance Amount and Button -->
-            <div class="flex justify-between items-center mt-4">
-                <p class="text-xl font-bold">$1,250.75</p>
-                <button (click)="openWithdrawDialog()" class="btn btn-sm">Withdrawal</button>
-            </div>
-        </div>
+<!-- Tasks Overview -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+  <div class="card bg-sky-100">
+    <div class="card-body">
+      <div class="flex justify-between items-center">
+        <span class="text-sky-700 text-lg font-semibold">📝 Created</span>
+        <span class="text-2xl font-bold text-sky-700">{{ stats.created }}</span>
+      </div>
     </div>
-    <div class="rounded-lg bg-neutral px-7 py-3">
-        <!-- Account Details Table -->
-        <div class="flex flex-col space-y-1">
-            <!-- Header Row -->
-            <div class="flex justify-between font-bold text-sm">
-                <span>Bank</span>
-                <span>Account Name</span>
-                <span>Account Number</span>
-            </div>
+  </div>
 
-            <!-- Data Row -->
-            <div class="flex justify-between font-normal text-sm">
-                <span>FAZ</span>
-                <span class="uppercase">{{userInfo.surname}} {{userInfo.other_name}}</span>
-                <div class="flex items-center">
-                    <span>{{userInfo.account_number}}</span>
-                    <mat-icon class="ml-2 cursor-pointer text-secondary" title="Copy Account Number"
-                        (click)="copyToClipboard()">
-                        content_copy
-                    </mat-icon>
-                </div>
-            </div>
-        </div>
+  <div class="card bg-yellow-100">
+    <div class="card-body">
+      <div class="flex justify-between items-center">
+        <span class="text-yellow-700 text-lg font-semibold">🚧 In Progress</span>
+        <span class="text-2xl font-bold text-yellow-700">{{ stats.inProgress }}</span>
+      </div>
     </div>
+  </div>
 
-    <div class="grid md:grid-cols-7 gap-y-6 md:gap-6">
-        <!-- Quick Actions (col-span-2) -->
-        <div class="col-span-full md:col-span-2 bg-neutral shadow-md rounded-lg p-6">
-            <div class="text-lg font-semibold text-primary">Quick Actions</div>
-            <div class="mt-4 space-y-2">
-                <button class="btn btn-primary w-full" (click)="openAirtimeDialog()">Buy Airtime</button>
-                <button class="btn btn-primary w-full" (click)="openDataDialog()" >Buy Data</button>
-                <button class="btn btn-primary w-full" (click)="openTransferDialog()">Transfer Money</button>
-                <button class="btn btn-primary w-full" (click)="openPayBillDialog()">Pay Bills</button>
-            </div>
-        </div>
-
-        <!-- Transaction History (col-span-5, mat-table) -->
-        <div class="col-span-5 bg-neutral shadow-md rounded-lg p-6">
-            <div class="text-lg font-semibold text-primary">Recent Transactions </div>
-            <div class="overflow-auto max-h-64 mt-4">
-                <table mat-table [dataSource]="transactions" class="mat-elevation-z8 w-full">
-             
-
-                    <!-- Description Column -->
-                    <ng-container matColumnDef="transaction_type">
-                        <th mat-header-cell *matHeaderCellDef>Description</th>
-                        <td mat-cell *matCellDef="let transaction">{{ transaction.transaction_type }}</td>
-                    </ng-container>
-
-                    <!-- Amount Column -->
-                    <ng-container matColumnDef="amount">
-                        <th mat-header-cell *matHeaderCellDef>Amount</th>
-                        <td mat-cell *matCellDef="let transaction" class="text-right">{{ transaction.money | currency
-                            }}</td>
-                    </ng-container>
-
-                    <!-- Date Column -->
-                    <ng-container matColumnDef="date">
-                        <th mat-header-cell *matHeaderCellDef>Date</th>
-                        <td mat-cell *matCellDef="let transaction">{{ getDate(transaction.timestamp) }}</td>
-                    </ng-container>
-
-                    <!-- Time Column -->
-                    <ng-container matColumnDef="time">
-                    <th mat-header-cell *matHeaderCellDef>Time</th>
-                    <td mat-cell *matCellDef="let transaction">{{ getTime(transaction.timestamp) }}</td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-            </div>
-        </div>
+  <div class="card bg-red-100">
+    <div class="card-body">
+      <div class="flex justify-between items-center">
+        <span class="text-red-700 text-lg font-semibold">⛔ Blocked</span>
+        <span class="text-2xl font-bold text-red-700">{{ stats.blocked }}</span>
+      </div>
     </div>
+  </div>
+
+  <div class="card bg-purple-100">
+    <div class="card-body">
+      <div class="flex justify-between items-center">
+        <span class="text-purple-700 text-lg font-semibold">🔎 To Confirm</span>
+        <span class="text-2xl font-bold text-purple-700">{{ stats.toConfirm }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card bg-green-100">
+    <div class="card-body">
+      <div class="flex justify-between items-center">
+        <span class="text-green-700 text-lg font-semibold">✅ Completed</span>
+        <span class="text-2xl font-bold text-green-700">{{ stats.completed }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Activities -->
+<div class="card bg-base-100 shadow-md">
+  <div class="card-body">
+    <h2 class="card-title text-lg mb-4">🔄 Recent Activity</h2>
+    <ul class="space-y-3 max-h-60 overflow-y-auto">
+      <li *ngFor="let activity of recentActivities" class="text-sm flex items-start gap-2">
+        <span class="text-primary">•</span>
+        <span>
+          <strong>{{ activity.user }}</strong> {{ activity.action }} 
+          <span class="italic text-gray-500">{{ activity.task }}</span>
+          <span class="block text-xs text-gray-400">{{ activity.time }}</span>
+        </span>
+      </li>
+    </ul>
+  </div>
 </div>

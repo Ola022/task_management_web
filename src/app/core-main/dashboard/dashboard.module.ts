@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { SharedModule } from '../../shared/shared.module';
+import { TransferComponent } from '../actions-comp/transfer/transfer.component';
 
 export const dashboardRoutes: Routes = [
   {
@@ -12,7 +13,7 @@ export const dashboardRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [DashboardComponent, TransferComponent],
   imports: [
     CommonModule,
     SharedModule,

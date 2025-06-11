@@ -4,12 +4,6 @@ import { SharedModule } from '../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreMainComponent } from './core-main.component';
 import { HeaderComponent } from './header/header.component';
-import { TransferComponent } from './actions-comp/transfer/transfer.component';
-import { AirtimeComponent } from './actions-comp/airtime/airtime.component';
-import { DataComponent } from './actions-comp/data/data.component';
-import { PayBillComponent } from './actions-comp/pay-bill/pay-bill.component';
-import { WithdrawComponent } from './actions-comp/withdraw/withdraw.component';
-import { DepositComponent } from './actions-comp/deposit/deposit.component';
 
 
 
@@ -60,8 +54,7 @@ export const coreMainRoutes: Routes = [
 
 @NgModule({
   declarations: [    
-    CoreMainComponent, HeaderComponent, TransferComponent, AirtimeComponent, DataComponent, PayBillComponent, 
-    WithdrawComponent, DepositComponent
+    CoreMainComponent, HeaderComponent,
   ],
   imports: [
     CommonModule,
