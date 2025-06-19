@@ -26,9 +26,21 @@
       <div class="flex flex-wrap gap-2">
         <span *ngFor="let user of meeting.participants"
               class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full">
-          {{ user }}
+          {{this.getUserById(+user)?.full_name || 'Unknown' }};
         </span>
       </div>
+    </div>
+  </div>
+
+  <!-- Date and Time -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div>
+      <div class="text-gray-500 font-medium mb-1">Date</div>
+      <div class="text-gray-800">{{ meeting.date }}</div>
+    </div>
+    <div>
+      <div class="text-gray-500 font-medium mb-1">Time</div>
+      <div class="text-gray-800">{{ meeting.time }}</div>
     </div>
   </div>
 
@@ -37,18 +49,6 @@
     <div class="text-gray-500 font-medium mb-1">Agenda</div>
     <div class="text-gray-800 whitespace-pre-wrap">
       {{ meeting.agenda }}
-    </div>
-  </div>
-
-  <!-- Date and Time -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-    <div>
-      <div class="text-gray-500 font-medium mb-1">Date</div>
-      <div class="text-gray-800">{{ meeting.dateOnly }}</div>
-    </div>
-    <div>
-      <div class="text-gray-500 font-medium mb-1">Time</div>
-      <div class="text-gray-800">{{ meeting.timeOnly | date: 'shortTime' }}</div>
     </div>
   </div>
 

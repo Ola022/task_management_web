@@ -15,10 +15,10 @@ export class TaskCommentComponent {
   @Output() public close: EventEmitter<any> = new EventEmitter<any>()
   loadingSpinner!: boolean;
   errorMessage!: string;
-   newMessage = '';
-   
+  newMessage = '';
+
   users: any[] = [];
-  messages: any[]= [];
+  messages: any[] = [];
   constructor(
     private app: AppService,
   ) {
@@ -92,8 +92,9 @@ export class TaskCommentComponent {
       .subscribe({
         next: (res: any) => {
           if (res['message'] == Constant.SUCCESS) {
-           // this.app.snackbar.open('Comment added successfully', 'Close', { duration: 3000 });
-            this.newMessage = '';            
+            // this.app.snackbar.open('Comment added successfully', 'Close', { duration: 3000 });
+            this.newMessage = '';
+            this.getAllComments()
           } else {
             this.errorMessage = res['data'];
           }
@@ -105,26 +106,26 @@ export class TaskCommentComponent {
       });
   }
 
-
-  // sendMessage() {
-  //   if (!this.newMessage.trim()) return;
-
-  //   this.messages.push({
-  //     sender: this.currentUser,
-  //     text: this.newMessage,
-  //     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  //   });
-
-  //   this.newMessage = '';
-  // }
-
-  // currentUser = 'Seyi Gabriel'; // or get from auth
-  // newMessage = '';
-//{ sender: 'John Doe', text: 'Hey, how are you?', time: '2:30 PM' },
-  //  { sender: 'Seyi Gabriel', text: 'I’m good, just working on the new UI.', time: '2:31 PM' }
-  
+  formatTimestamp(isoString: string): string {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    // Example: 2025-06-11 09:09
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  }
 
   getInitials(name: string): string {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    if (!name) return '';
+    return name
+      .split(' ')
+      .filter(n => n) // remove empty strings
+      .map(n => n[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
   }
 }

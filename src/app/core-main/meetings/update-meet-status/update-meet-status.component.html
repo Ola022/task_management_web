@@ -1,9 +1,9 @@
-<div class="max-w-md bg-white p-4 rounded-xl shadow-md space-y-4">
+<div *ngIf="Meet.action == 'Update'" class="max-w-md bg-white p-4 rounded-xl shadow-md space-y-4">
   <div class="text-lg font-semibold text-gray-800">Update Meeting Status</div>
 
   <mat-form-field appearance="fill" class="w-full">
     <mat-label>Status</mat-label>
-    <mat-select [(value)]="meeting.status">
+    <mat-select [(value)]="status">
       <mat-option *ngFor="let status of statuses" [value]="status">
         {{ status }}
       </mat-option>
@@ -14,4 +14,17 @@
     <button mat-stroked-button color="warn" (click)="onCancel()">Cancel</button>
     <button mat-raised-button color="primary" (click)="save()">Save</button>
   </div>
+</div>
+
+
+<div *ngIf="Meet.action == 'Delete'" class="p-6 max-w-sm text-center space-y-4">
+    <div class="text-lg font-semibold text-gray-800">Delete Task</div>
+    <div *ngIf="errorMessage" class="alert alert-error text-xs">
+            <span>{{ errorMessage }}</span>
+        </div>
+    <div class="text-sm text-gray-600">Are you sure you want to delete this task?</div>
+    <div class="flex justify-end gap-3 mt-6">
+        <button mat-raised-button class="btn-ghost" (click)="onCancel()">Cancel</button>
+        <button mat-raised-button class="" (click)="deleteTask()">Yes, Delete</button>
+    </div>
 </div>

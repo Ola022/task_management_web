@@ -7,34 +7,33 @@
     </div>
 
 </div>
-<div class="h-[90vh] w-full max-w-2xl mx-auto bg-base-100  p-4 flex flex-col justify-between">
+<div class="h-[90vh] w-full max-w-2xl mx-auto bg-base-100  p-2 flex flex-col justify-between">
     <div *ngIf="errorMessage" class="alert alert-error text-xs">
-            <span>{{ errorMessage }}</span>
-        </div>
+        <span>{{ errorMessage }}</span>
+    </div>
     <!-- Chat messages list -->
     <div class="overflow-y-auto space-y-1 mb-1">
         <div *ngFor="let message of messages" class="chat"
-            [ngClass]="message.user_id === userId ? 'chat-end' : 'chat-start'">
+            [ngClass]="message?.user_id === userId ? 'chat-end' : 'chat-start'">
 
             <!-- Avatar -->
-         
-            <div class="chat-image avatar">
+            <div class="chat-image flex items-end">
                 <div
-                    class="w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center leading-none text-xs font-semibold">
-                    {{ getInitials(message.full_name) }}
+                    class="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-semibold">
+                    {{ getInitials(message?.full_name) }}
                 </div>
             </div>
             <!-- Header: Name + Time -->
             <div class="chat-header text-xs"
-                [ngClass]="message.user_id === userId ? 'text-right text-gray-500' : 'text-gray-500'">
-                {{ message.user_id === userId ? 'You' : message.user }}
-                <time class="ml-1 text-[10px] opacity-70">{{ message.timestamp }}</time>
+                [ngClass]="message?.user_id === userId ? 'text-right text-gray-500' : 'text-gray-500'">
+                {{ message?.user_id === userId ? 'You' : message?.user }}
+                <time class="ml-1 text-[10px] opacity-70">{{ formatTimestamp(message?.timestamp) }}</time>
             </div>
 
             <!-- Message -->
             <div class="chat-bubble text-sm max-w-[80%] break-words"
-                [ngClass]="message.user_id === userId ? 'bg-primary text-white' : 'bg-gray-200 text-black'">
-                {{ message.comment }}
+                [ngClass]="message?.user_id === userId ? 'bg-primary text-white' : 'bg-gray-200 text-black'">
+                {{ message?.comment }}
             </div>
         </div>
     </div>

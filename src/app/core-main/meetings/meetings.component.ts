@@ -4,6 +4,7 @@ import { AppService } from '../../app.service';
 import { TaskConfirmDialogComponent } from '../tasks/task-confirm-dialog/task-confirm-dialog.component';
 import { ViewMeetDialogComponent } from './view-meet-dialog/view-meet-dialog.component';
 import { UpdateMeetStatusComponent } from './update-meet-status/update-meet-status.component';
+import { Constant } from '../../resources/constants';
 
 @Component({
   selector: 'app-meetings',
@@ -13,10 +14,33 @@ import { UpdateMeetStatusComponent } from './update-meet-status/update-meet-stat
 export class MeetingsComponent {
   selected = 'all';
   selectedTab: 'All' | 'Upcoming' | 'Ongoing' | 'Completed' | 'Cancelled' = 'All';
-
-  meetings = [
-      {
-        id: 2,
+    meetings = [{
+    title: '',
+    organizer: '',
+    participants: [] as string[],
+    date: '',
+    time: '',
+    locationType: 'Online',
+    url: '',
+    venue: '',
+    agenda: '',
+    status: 'Upcoming',
+    types: "meetings",
+  }];
+  meeting = [
+    { id: 2,
+      title: 'Team Standup',
+      organizer: 'Jane Doe',
+      participants: ['Alex', 'Mary', 'John'],
+      date: '2025-03-30T15:30:00',
+      agenda: 'Review tasks and blockers.',
+      locationType: 'online',
+      url: 'https://meet.google.com/abc-defg',
+      status: 'Ongoing'}
+  ]
+  mmeetings = [
+    {
+      id: 2,
       title: 'Team Standup',
       organizer: 'Jane Doe',
       participants: ['Alex', 'Mary', 'John'],
@@ -25,52 +49,31 @@ export class MeetingsComponent {
       locationType: 'online',
       url: 'https://meet.google.com/abc-defg',
       status: 'Ongoing'
-    },
-    {
-        id: 2,
-      title: 'Product Demo',
-      agenda: 'Walkthrough for stakeholders',
-      organizer: 'Jane Doe',
-      participants: ['Sarah', 'Michael', 'David'],
-      date: '2025-03-30T15:30:00',
-      locationType: 'online',
-      type: 'online',
-      url: 'https://meet.google.com/xyz-demo',
-      venue: '',
-      status: 'Upcoming'
-    }, {
-        id: 2,
-      title: 'Design Sync',
-      organizer: 'Tom',
-      participants: ['Sarah', 'Victor'],
-      date: '2025-03-31T10:00:00',
-      agenda: 'Discuss new UI/UX plans.',
-      locationType: 'offline',
-      venue: 'Main Hall',
-      status: 'Upcoming'
-    },
-    {
-        id: 2,
-      title: 'Sprint Retrospective',
-      organizer: 'Aisha',
-      participants: ['Team A'],
-      date: '2025-03-25T12:00:00',
-      agenda: 'Review what went well and improvements.',
-      locationType: 'online',
-      url: 'https://zoom.com/retro',
-      status: 'Completed'
-    },
+    },   
   ];
   selectedDate: any;
   openSideNav: boolean = false;
+  isSaved: boolean = false
   selectedMeetsID: number = 0;
   openCommentSideNav: boolean = false;
+  userInfo: any;
+  userId!: number;
+  loadingSpinner: boolean = true;
+  errorMessage: string = '';
 
-  constructor(
-    private app: AppService,
-    private dialog: MatDialog,
+    constructor(
+      private app: AppService,
+      private dialog: MatDialog,
+  
+    ) {
+      this.userInfo = this.app.getFromStore(Constant.USER_INFO);
+      this.userId = this.userInfo.id
+    }
+    
 
-  ) {}
+  ngOnInit(): void {
+    this.getAllMeetings()
+  }
   filteredMeetig(status: string) {
     return this.meetings.filter(m => m.status === status);
   }
@@ -78,7 +81,7 @@ export class MeetingsComponent {
     if (status === 'all') return this.meetings;
     return this.meetings.filter(m => m.status.toLowerCase() === status.toLowerCase());
   }
-  
+
   filteredMeeting() {
     if (this.selectedTab === 'All') return this.meetings;
     return this.meetings.filter(m => m.status === this.selectedTab);
@@ -90,14 +93,43 @@ export class MeetingsComponent {
       return matchTab && matchDate;
     });
   }
-  
 
-  closeAddMeetNav() {
-    this.openSideNav = false
+  getAllMeetings() {
+      this.errorMessage = '';
+      this.app.coreMainService.getAllMeetings(this.userId)
+        .subscribe({
+          next: (res: any) => {
+            this.loadingSpinner = false;
+            if (res['message'] == Constant.SUCCESS) {
+              this.meetings = res['data'].meetings || [];
+              if (this.meetings.length === 0) {
+                this.errorMessage = 'No meetings found.';
+              }  
+              
+            } else {
+              this.meetings = [];
+              this.errorMessage = res['data'];
+            }
+          },
+          error: (error) => {
+            this.loadingSpinner = false;
+            this.errorMessage = Constant.ERROR_MSG;
+          }
+        });
+    }
+
+  closeAddMeetNav(){
+    this.openSideNav = false;
+    this.selectedMeetsID = 0; // Reset the selected task ID        
+  }
+  closeRefreshMeetNav() {
+      this.openSideNav = false
+      this.selectedMeetsID = 0; // Reset the selected task ID
+      this.getAllMeetings()    
   }
   openAddMeetNav() {
     this.selectedMeetsID = 0
-    this.openSideNav = true 
+    this.openSideNav = true
   }
 
   editMeet(meet: any) {
@@ -113,35 +145,36 @@ export class MeetingsComponent {
     this.selectedMeetsID = meet.id; // Set the selected task ID
     this.openCommentSideNav = true; // Open the side navigation
   }
-
+  
   openViewDialog(meet: any) {
-      let id  = meet?.id
-      const dialogRef = this.dialog.open(ViewMeetDialogComponent, {
-        width: '1200px',
-        data: id 
-      });
-  
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          // Perform an action like checking balance
-          //this.checkBalance();
-        }
-      });
-    }
+    let id = meet
+    const dialogRef = this.dialog.open(ViewMeetDialogComponent, {
+      width: '1200px',
+      data: meet
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Perform an action like checking balance
+        //this.checkBalance();
+      }
+    });
+  }
+
+
+  openUpdateStatusDialog(meet: any, action: string) {
+    let id = meet?.id
+    let status = meet?.status
     
-  openUpdateStatusDialog(task: any) {
-      let id  = task?.id
-      const dialogRef = this.dialog.open(UpdateMeetStatusComponent, {
-        width: '400px',
-        data: id 
-      });
-  
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          // Perform an action like checking balance
-          //this.checkBalance();
-        }
-      });
-    }
+    const dialogRef = this.dialog.open(UpdateMeetStatusComponent, {
+      width: '400px',
+      data: {meetId: id, status: status, userID: this.userId, action:action}
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getAllMeetings()
+      }
+    });
+  }
 }

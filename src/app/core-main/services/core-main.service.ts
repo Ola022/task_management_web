@@ -104,7 +104,35 @@ deleteComment(commentId: number, userId: number): Observable<any> {
 
 
 
+createMeeting(userId: number, meeting: any): Observable<any> {
+    return this.http.post(`${this.url}meeting/create/${userId}`, meeting)
+      .pipe(catchError(err => this.base.errorHandler(err)));
+  }
 
+  getAllMeetings(userId: number): Observable<any> {
+    return this.http.get(`${this.url}meeting/all/${userId}`)
+      .pipe(catchError(err => this.base.errorHandler(err)));
+  }
+
+  getMeetingDetail(meetingId: number, userId: number): Observable<any> {
+    return this.http.get(`${this.url}meeting/detail/${meetingId}/${userId}`)
+      .pipe(catchError(err => this.base.errorHandler(err)));
+  }
+
+  updateMeeting(meetingId: number, userId: number, meeting: any): Observable<any> {
+    return this.http.put(`${this.url}meeting/update/${meetingId}/${userId}`, meeting)
+      .pipe(catchError(err => this.base.errorHandler(err)));
+  }
+
+  updateMeetingStatus(meetingId: number, newStatus: string, userId: number): Observable<any> {
+    return this.http.put(`${this.url}meeting/status/update/${meetingId}/${newStatus}/${userId}`, {})
+      .pipe(catchError(err => this.base.errorHandler(err)));
+  }
+
+  deleteMeeting(meetingId: number, userId: number): Observable<any> {
+    return this.http.delete(`${this.url}meeting/delete/${meetingId}/${userId}`)
+      .pipe(catchError(err => this.base.errorHandler(err)));
+  }
 
 
 
