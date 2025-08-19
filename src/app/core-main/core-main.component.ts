@@ -10,12 +10,14 @@ export class CoreMainComponent implements OnInit{
   isDrawerOpen = false;
 
   toggleDrawer(): void {
+    // Why: Single source of truth for open/close avoids class dr
     this.isDrawerOpen = !this.isDrawerOpen;
   }
 
   closeDrawer(): void {
     this.isDrawerOpen = false;
   }
+  
   ngOnInit(): void {
     const storedTheme = localStorage.getItem('theme');
     if (storedTheme) {
