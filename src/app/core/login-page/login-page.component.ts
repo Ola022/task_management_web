@@ -24,7 +24,7 @@ export class LoginPageComponent {
   ngOnInit(): void {
     // Initialize the form with email and password fields
     this.form = this.fb.group({
-      email: ['mymail@gmail.com', [Validators.required, Validators.email]], // Email field with validation
+      email: ['orlam0222@gmail.com', [Validators.required, Validators.email]], // Email field with validation
       password: ['1111', [Validators.required, Validators.minLength(4)]], // Password with minLength validation
     });
   }
