@@ -7,7 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoreMainComponent implements OnInit{
   theme: any
-  
+  isDrawerOpen = false;
+
+  toggleDrawer(): void {
+    // Why: Single source of truth for open/close avoids class drift.
+    this.isDrawerOpen = !this.isDrawerOpen;
+  }
+
+  closeDrawer(): void {
+    // Why: Backdrop and navigation items can close the drawer on mobile.
+    this.isDrawerOpen = false;
+  }
   ngOnInit(): void {
     const storedTheme = localStorage.getItem('theme');
     if (storedTheme) {
