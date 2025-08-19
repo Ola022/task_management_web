@@ -10,14 +10,14 @@ export class CoreMainComponent implements OnInit{
   isDrawerOpen = false;
 
   toggleDrawer(): void {
-    // Why: Single source of truth for open/close avoids class drift.
+    // Why: Single source of truth for open/close avoids class dr
     this.isDrawerOpen = !this.isDrawerOpen;
   }
 
   closeDrawer(): void {
-    // Why: Backdrop and navigation items can close the drawer on mobile.
     this.isDrawerOpen = false;
   }
+  
   ngOnInit(): void {
     const storedTheme = localStorage.getItem('theme');
     if (storedTheme) {
