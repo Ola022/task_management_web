@@ -7,7 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoreMainComponent implements OnInit{
   theme: any
-  
+  isDrawerOpen = false;
+
+  toggleDrawer(): void {
+    this.isDrawerOpen = !this.isDrawerOpen;
+  }
+
+  closeDrawer(): void {
+    this.isDrawerOpen = false;
+  }
   ngOnInit(): void {
     const storedTheme = localStorage.getItem('theme');
     if (storedTheme) {
