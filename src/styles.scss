@@ -36,6 +36,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 100vh;
     top: 0;
 }
+/* On small screens, make it full width */
+@media (max-width: 768px) {
+    .custom-sidenav-comment {
+        width: 97vw;
+        left: 0;
+        right: 0;
+        padding: 16px 8px;
+    }
+}
+.mat-table {
+  min-width: 700px !important;
+  width: 100% !important;
+  table-layout: auto !important;
+}
 
 .custom-sidenav-addMeetEvent {
     position: fixed;
@@ -53,7 +67,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /* On small screens, make it full width */
 @media (max-width: 768px) {
     .custom-sidenav-addMeetEvent {
-        width: 100vw;
+        width: 97vw;
         left: 0;
         right: 0;
         padding: 16px 8px;
@@ -79,7 +93,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /* On small screens, make it full width */
 @media (max-width: 768px) {
     .custom-sidenave-addTask {
-        width: 100vw;
+        width: 97vw;
         left: 0;
         right: 0;
         padding: 16px 8px;
@@ -108,7 +122,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .page-padding{    
-    @apply px-2 md:px-6 lg:px-[34px] lg:pl-16 pt-8 md:pt-10 lg:pt-16 mx-auto;
+    @apply px-2 md:px-6 lg:px-[34px] lg:pl-16 pt-8 md:pt-10 lg:pt-16 md:mx-10;
   } 
 
   .btn-primary {

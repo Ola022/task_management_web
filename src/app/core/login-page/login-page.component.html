@@ -1,10 +1,11 @@
 <div class="min-h-screen flex flex-col md:flex-row md:gap-x-32 bg-gray-50">
     <!-- Left side (Login form, always visible) -->
-    <div class="w-full md:w-5/12 flex items-center justify-center px-6 sm:px-10 md:px-24 py-10 md:py-20 bg-white md:bg-gradient-to-br md:from-gray-50 md:to-white shadow-sm">
+    <div
+        class="w-full md:w-5/12 flex items-center justify-center px-6 sm:px-10 md:px-24 py-7 md:py-8 bg-white md:bg-gradient-to-br md:from-gray-50 md:to-white shadow-sm">
         <div class="w-full max-w-md space-y-6">
-            
+
             <!-- Security Notice -->
-            <div class="flex items-center space-x-3 p-3 rounded-md bg-secondarylight text-secondary-200">
+            <div class="flex items-center space-x-3 p-2 rounded-md bg-secondarylight text-secondary-200">
                 <div><mat-icon>lock</mat-icon></div>
                 <div>
                     <div class="font-normal text-sm">Please check that you’re visiting the correct URL</div>
@@ -15,12 +16,13 @@
             <!-- Login Form -->
             <form [formGroup]="form">
                 <div class="rounded-lg p-6 sm:p-8 md:p-10 space-y-6 bg-white border border-gray-200 shadow-sm">
-                    
+
                     <!-- Header -->
                     <div>
-                        <div class="flex items-center text-primary font-semibold text-lg sm:text-2xl mb-4 space-x-3 sm:space-x-4">
+                        <div
+                            class="flex items-center text-primary font-semibold text-lg sm:text-2xl mb-4 space-x-3 sm:space-x-4">
                             <img class="h-10 sm:h-12" src="assets/images/faz-logo.png" alt="Logo" />
-                            <div>Sign in to TaskApp</div>
+                            <div>Sign in to Task Sys</div>
                         </div>
                         <p class="text-xs sm:text-sm text-secondary mb-6">
                             Manage your tasks, projects, and deadlines in one place.
@@ -45,26 +47,25 @@
 
                     <!-- Actions -->
                     <div class="space-y-3">
+                        <!-- Error Message -->
+                        <div *ngIf="errorMessage" class="alert alert-error text-xs my-2">
+                            <span>{{ errorMessage }}</span>
+                        </div>
+
                         <a href="#" class="text-primary text-sm inline-block">Forgot Password?
                             <span class="text-primary">Reset it</span>
                         </a>
                         <button class="btn btn-primary w-full py-2 flex items-center justify-center gap-2"
-                                (click)="signin()"
-                                [disabled]="form.invalid || loading">
-                            <!-- Spinner -->
-                            <svg *ngIf="loading" class="animate-spin h-4 w-4 text-white"
-                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor"
-                                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                            </svg>
+                            (click)="signin()" [disabled]="form.invalid || loadingSpinner">
+                            <!-- Spinner -->                            
+                            <mat-progress-spinner *ngIf="loadingSpinner" color="primary" diameter="18" mode="indeterminate">
+                                    </mat-progress-spinner>
                             <span>Sign In</span>
                         </button>
                     </div>
 
                     <p class="text-xs text-gray-600">
-                        Don’t have an account? 
+                        Don’t have an account?
                         <a href="#" class="text-primary">Click here to register</a>
                     </p>
                 </div>
@@ -76,7 +77,7 @@
     <div class="hidden md:flex w-full md:w-7/12 items-center justify-center relative px-10">
         <!-- Background Image -->
         <div class="absolute inset-0 bg-no-repeat bg-contain opacity-80"
-             style="background-image: url('assets/images/tasks_bg.png'); z-index: 0; background-size: contain; background-position: right top;">
+            style="background-image: url('assets/images/africa_map21.png'); z-index: 0; background-size: contain; background-position: right top;">
         </div>
 
         <!-- Dashboard Mockup -->
@@ -92,7 +93,8 @@
                         <div class="text-xl font-semibold text-secondary">TaskApp</div>
                     </div>
                     <nav class="flex-1 p-4 space-y-2">
-                        <a href="#" class="block p-2 rounded hover:bg-secondary text-secondarylight bg-primary">Dashboard</a>
+                        <a href="#"
+                            class="block p-2 rounded hover:bg-secondary text-secondarylight bg-primary">Dashboard</a>
                         <a href="#" class="block p-2 rounded hover:bg-secondary hover:text-base-100">My Tasks</a>
                         <a href="#" class="block p-2 rounded hover:bg-secondary hover:text-base-100">Projects</a>
                         <a href="#" class="block p-2 rounded hover:bg-secondary hover:text-base-100">Team</a>
@@ -137,5 +139,5 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </div>

@@ -3,6 +3,7 @@ import { Constant } from '../../resources/constants';
 import { MatDialog } from '@angular/material/dialog';
 import { AppService } from '../../app.service';
 import { AddStaffDialogComponent } from './add-staff-dialog/add-staff-dialog.component';
+import { VConfirmationComponent } from '../v-confirmation/v-confirmation.component';
 
 
 @Component({
@@ -93,5 +94,43 @@ openCreate(){
     this.selecteduser = user;
 
   }
+ openDeleteDialog(data: any) {
+    let id = data?.id
+    const dialogRef = this.dialog.open(VConfirmationComponent, {
+      width: '400px',
+      data: { 'action': 'delete', 'data': data, }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteUser(data);
+      }
+    });
+  }
+
+  deleteUser(data: any) {
+      this.errorMessage = '';
+      this.app.coreMainService.deleteMeeting(data.id, this.userId)
+        .subscribe({
+          next: (res: any) => {
+            this.loadingSpinner = false;
+            if (res['message'] == Constant.SUCCESS) {
+              this.app.snackbar.open('User deleted successfully', 'Close', { duration: 3000 });
+              this.getAllUsers();
+
+            } else {
+              this.users = [];
+              this.app.snackbar.open('Failed to delete task', 'Close', { duration: 3000 });
+              this.errorMessage = res['data'].error || 'Something went wrong';
+            }
+          },
+          error: (error) => {
+            this.loadingSpinner = false;
+            this.errorMessage = Constant.ERROR_MSG;
+          }
+        });
+    }
+  
+
 
 }

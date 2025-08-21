@@ -1,19 +1,19 @@
-<div class="max-w-7xl mx-auto p-6 space-y-8">
+<div class="max-w-7xl  md:p-6 p-0 py-6 space-y-8">
     <div class="flex flex-wrap items-center justify-between mb-4 gap-4">
         <!-- Tabs -->
-        <div class="tabs tabs-boxed">
-            <a class="tab" [class.tab-active]="selectedTab === 'All'" 
-                (click)="selectedTab = 'All'">All</a>
-            <a class="tab" [class.tab-active]="selectedTab === 'Upcoming'"
-                (click)="selectedTab = 'Upcoming'">Upcoming</a>
-            <a class="tab" [class.tab-active]="selectedTab === 'Ongoing'" 
-                (click)="selectedTab = 'Ongoing'">Ongoing</a>
-            <a class="tab" [class.tab-active]="selectedTab === 'Completed'"
-                (click)="selectedTab = 'Completed'">Completed</a>
-            <a class="tab" [class.tab-active]="selectedTab === 'Cancelled'"
-                (click)="selectedTab = 'Cancelled'">Cancelled</a>                    
+        <div class="overflow-x-auto">
+            <div class="tabs tabs-boxed flex-nowrap flex" style="min-width: max-content;">
+                <a class="tab" [class.tab-active]="selectedTab === 'All'" (click)="selectedTab = 'All'">All</a>
+                <a class="tab" [class.tab-active]="selectedTab === 'Upcoming'"
+                    (click)="selectedTab = 'Upcoming'">Upcoming</a>
+                <a class="tab" [class.tab-active]="selectedTab === 'Ongoing'"
+                    (click)="selectedTab = 'Ongoing'">Ongoing</a>
+                <a class="tab" [class.tab-active]="selectedTab === 'Completed'"
+                    (click)="selectedTab = 'Completed'">Completed</a>
+                <a class="tab" [class.tab-active]="selectedTab === 'Cancelled'"
+                    (click)="selectedTab = 'Cancelled'">Cancelled</a>
+            </div>
         </div>
-
         <!-- Right-side items (Date Filter & Schedule Button) -->
         <div class="flex items-center gap-3">
             <!-- Date Filter -->
@@ -52,7 +52,8 @@
                         <mat-menu #menuCreated="matMenu">
                             <button mat-menu-item (click)="openViewDialog(meeting)">View Detail</button>
                             <button mat-menu-item (click)="editMeet(meeting)">Edit</button>
-                            <button mat-menu-item (click)="openUpdateStatusDialog(meeting, 'Update')">Update Status</button>
+                            <button mat-menu-item (click)="openUpdateStatusDialog(meeting, 'Update')">Update
+                                Status</button>
                             <button mat-menu-item (click)="openComment(meeting)">Comment</button>
                             <button mat-menu-item (click)="openUpdateStatusDialog(meeting, 'Delete')">Delete</button>
                         </mat-menu>
@@ -60,8 +61,9 @@
                 </div>
 
                 <div class="text-center my-4">
-                    <p class="text-base font-semibold">{{ meeting.date | date: 'fullDate' }} 
-                        <br> {{ meeting.time}}</p>
+                    <p class="text-base font-semibold">{{ meeting.date | date: 'fullDate' }}
+                        <br> {{ meeting.time}}
+                    </p>
                 </div>
                 <!-- Location Info -->
                 <div class="mt-auto mb-4 text-sm text-gray-600 border-gray-200">
@@ -83,8 +85,8 @@
 </div>
 <!-- Add Comment -->
 <div *ngIf="openSideNav" class="custom-sidenav-addMeetEvent">
-    <app-add-meets class="full-width" (closeMeet)="closeAddMeetNav()" (closeRefreshMeet)="closeRefreshMeetNav()" [MeetID]="selectedMeetsID"
-        class="full-width"></app-add-meets>
+    <app-add-meets class="full-width" (closeMeet)="closeAddMeetNav()" (closeRefreshMeet)="closeRefreshMeetNav()"
+        [MeetID]="selectedMeetsID" class="full-width"></app-add-meets>
 </div>
 
 <!-- Add Comment -->

@@ -1,16 +1,16 @@
 <!-- Tasks Overview -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 mt-2">
-  <div class="card bg-sky-100">
-    <div class="card-body">
+  
+  <div class="card bg-sky-100 p-2 sm:p-4">
+    <div class="card-body p-2 sm:p-4">
       <div class="flex justify-between items-center">
-        <span class="text-sky-700 text-lg font-semibold">📝 Created</span>
-        <span class="text-2xl font-bold text-sky-700">{{ stats.created }}</span>
+        <span class="text-sky-700 text-base sm:text-lg font-semibold">📝 Created</span>
+        <span class="text-lg sm:text-2xl font-bold text-sky-700">{{ stats.created }}</span>
       </div>
     </div>
   </div>
-
-  <div class="card bg-yellow-100">
-    <div class="card-body">
+  <div class="card bg-yellow-100 p-2 sm:p-4">
+    <div class="card-body p-2 sm:p-4">
       <div class="flex justify-between items-center">
         <span class="text-yellow-700 text-lg font-semibold">🚧 In Progress</span>
         <span class="text-2xl font-bold text-yellow-700">{{ stats.inProgress }}</span>
@@ -18,8 +18,8 @@
     </div>
   </div>
 
-  <div class="card bg-red-100">
-    <div class="card-body">
+  <div class="card bg-red-100  p-2 sm:p-4">
+    <div class="card-body p-2 sm:p-4">
       <div class="flex justify-between items-center">
         <span class="text-red-700 text-lg font-semibold">⛔ Blocked</span>
         <span class="text-2xl font-bold text-red-700">{{ stats.blocked }}</span>
@@ -27,8 +27,8 @@
     </div>
   </div>
 
-  <div class="card bg-purple-100">
-    <div class="card-body">
+  <div class="card bg-purple-100  p-2 sm:p-4">
+    <div class="card-body p-2 sm:p-4">
       <div class="flex justify-between items-center">
         <span class="text-purple-700 text-lg font-semibold">🔎 To Confirm</span>
         <span class="text-2xl font-bold text-purple-700">{{ stats.toConfirm }}</span>
@@ -36,8 +36,8 @@
     </div>
   </div>
 
-  <div class="card bg-green-100">
-    <div class="card-body">
+  <div class="card bg-green-100  p-2 sm:p-4">
+    <div class="card-body p-2 sm:p-4">
       <div class="flex justify-between items-center">
         <span class="text-green-700 text-lg font-semibold">✅ Completed</span>
         <span class="text-2xl font-bold text-green-700">{{ stats.completed }}</span>

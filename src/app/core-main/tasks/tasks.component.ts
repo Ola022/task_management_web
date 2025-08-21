@@ -58,7 +58,7 @@ export class TasksComponent implements OnInit {
 
   allTasks: any[] = []
   allTasksReseved: any[] = []
-  
+
 
   constructor(
     private app: AppService,
@@ -212,7 +212,7 @@ export class TasksComponent implements OnInit {
     let id = task?.id
     const dialogRef = this.dialog.open(TaskConfirmDialogComponent, {
       width: '400px',
-      data: { 'action':'move', 'moveto': moveto, 'taskid': id, 'userID': this.userId }
+      data: { 'action': 'move', 'moveto': moveto, 'taskid': id, 'userID': this.userId }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -222,17 +222,16 @@ export class TasksComponent implements OnInit {
       }
     });
   }
-  
+
   openDeleteDialog(task: any) {
     let id = task?.id
     const dialogRef = this.dialog.open(TaskConfirmDialogComponent, {
       width: '400px',
-      data: { 'action':'delete', 'moveto': '', 'taskid': id, 'userID': this.userId }
+      data: { 'action': 'delete', 'moveto': '', 'taskid': id, 'userID': this.userId }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getAllTask();
         
       }
     });

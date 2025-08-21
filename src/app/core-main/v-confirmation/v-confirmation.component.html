@@ -1,0 +1,9 @@
+<div *ngIf="info.action ==  'delete'" class="p-6 max-w-sm text-center space-y-4">
+    <div class="text-lg font-semibold text-gray-800">Delete Record</div>
+    
+    <div class="text-sm text-gray-600">Are you sure you want to delete this Record?</div>
+    <div class="flex justify-end gap-3 mt-6">
+        <button mat-raised-button class="btn-ghost" (click)="onCancel()">Cancel</button>
+        <button mat-raised-button class="" (click)="deleteRecord()">Yes, Delete</button>
+    </div>
+</div>

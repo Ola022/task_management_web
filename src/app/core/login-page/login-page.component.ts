@@ -29,14 +29,6 @@ export class LoginPageComponent {
     });
   }
 
-  login() {
-    this.loading = true;    
-    setTimeout(() => {      
-      this.loading = false;      
-      this.router.navigate(['/app/dashboard']);
-    }, 2000);
-  }
-
   signin() {
     if (this.form.invalid) {
       this.errorMessage = 'Please enter a valid username or password'

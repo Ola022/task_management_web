@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreMainComponent } from './core-main.component';
 import { HeaderComponent } from './header/header.component';
+import { VConfirmationComponent } from './v-confirmation/v-confirmation.component';
 
 
 
@@ -54,7 +55,7 @@ export const coreMainRoutes: Routes = [
 
 @NgModule({
   declarations: [    
-    CoreMainComponent, HeaderComponent,
+    CoreMainComponent, HeaderComponent, VConfirmationComponent,
   ],
   imports: [
     CommonModule,
