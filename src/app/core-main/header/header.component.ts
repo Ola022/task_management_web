@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +20,11 @@ export class HeaderComponent {
       document.documentElement.setAttribute('data-theme', this.default_theme);
     }
   }
-  
+  @Output() menuToggle = new EventEmitter<void>();
+
+onMenuClick() {
+  this.menuToggle.emit();
+}
   showMenu = true
 
   switchThemeOld() {

@@ -23,8 +23,17 @@
 
 
 <div class="flex flex-wrap gap-2">
+    <!-- Show loading spinner -->
+<div *ngIf="loadingSpinner" class="flex justify-center items-center py-8">
+  <mat-spinner></mat-spinner>
+</div>
+
+<!-- Show error message -->
+<div *ngIf="errorMessage" class="alert alert-error text-xs my-2">
+  <span>{{ errorMessage }}</span>
+</div>
     <!-- Created Column -->
-    <div class="w-full md:w-[19%] bg-gray-50 rounded-sm p-4 shadow max-h-96 overflow-y-auto">
+    <div *ngIf="!loadingSpinner && !errorMessage" class="w-full md:w-[19%] bg-gray-50 rounded-sm p-4 shadow max-h-96 overflow-y-auto">
         <div class="font-semibold text-base mb-3">📝 Created</div>
         <ng-container *ngIf="createdTasks.length > 0; else noCreatedTask">
             <div *ngFor="let task of createdTasks" class="bg-white p-2 rounded shadow shadow-gray-400 mb-1">

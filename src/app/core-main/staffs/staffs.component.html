@@ -1,14 +1,14 @@
 <div class="space-y-6">
     <!-- user History (col-span-5, mat-table) -->
-    <div class="col-span-5 bg-neutral shadow-md rounded-lg p-6">
+    <div class="col-span-5  shadow-md rounded-lg p-6">
         <div class="flex justify-between items-center">
             <div class="text-lg font-semibold text-primary">All Staff</div>
             <div class="flex space-x-2">
-                 
-                    <button class="btn btn-primary" (click)="openCreate()">Add New Staff</button>
-                    <!-- <button class="btn btn-accent">Credit</button>
+
+                <button class="btn btn-primary" (click)="openCreate()">Add New Staff</button>
+                <!-- <button class="btn btn-accent">Credit</button>
                     <button class="btn btn-accent">Debit</button>-->
-                </div>
+            </div>
         </div>
 
         <!-- Search Input -->
@@ -16,8 +16,18 @@
             <input type="text" placeholder="Search users..." class="input input-bordered w-full" />
             <button class="btn btn-neutral ml-2" (click)="getAllUsers()">Reload</button>
         </div>
-        <div class="overflow-auto max-h-96 mt-4">
-            <table mat-table [dataSource]="users" class="mat-elevation-z8 w-full">
+        <!-- Show loading spinner -->
+        <div *ngIf="loadingSpinner" class="flex justify-center items-center py-8">
+            <mat-spinner></mat-spinner>
+        </div>
+
+        <!-- Show error message -->
+        <div *ngIf="errorMessage" class="alert alert-error text-xs my-2">
+            <span>{{ errorMessage }}</span>
+        </div>
+
+        <div class="overflow-auto max-h-96 mt-4 bg-neutral" *ngIf="!loadingSpinner && !errorMessage">
+            <table mat-table [dataSource]="users" class="mat-elevation-z8 min-w-full">
                 <!-- Description Column -->
                 <ng-container matColumnDef="title">
                     <th mat-header-cell *matHeaderCellDef>Staff Title</th>
@@ -42,7 +52,7 @@
                     <td mat-cell *matCellDef="let user">{{ user.academic_rank }}</td>
                 </ng-container>
 
-                  <!-- Time Column -->
+                <!-- Time Column -->
                 <ng-container matColumnDef="role">
                     <th mat-header-cell *matHeaderCellDef>Role</th>
                     <td mat-cell *matCellDef="let user">{{getRole(user.role) }}</td>
@@ -58,6 +68,6 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
-        </div>        
+        </div>
     </div>
 </div>

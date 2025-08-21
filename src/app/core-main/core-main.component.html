@@ -17,7 +17,7 @@
         <span class="text-base">MANAGEMENT SYSTEM</span>
       </div>
 
-      <nav class="text-base text-secondarylight font-medium flex-grow py-5">
+      <nav class="text-sm text-secondarylight font-medium flex-grow py-5">
         <ul class="space-y-2">
           <li class="custom-item hover:bg-secondary hover:text-neutral"
               routerLinkActive="bg-secondary text-neutral"
@@ -86,24 +86,12 @@
   ></div>
 
   <!-- Main content area -->
-  <div class="flex-1 ml-0 md:ml-64">
-    <div class="sticky top-0 z-20 flex items-center bg-white shadow px-4 h-14">
-      <!-- Toggle button (mobile only) -->
-      <button
-        type="button"
-        class="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-secondary"
-        (click)="toggleDrawer()"
-        [attr.aria-expanded]="isDrawerOpen"
-        aria-controls="drawer"
-        aria-label="Open navigation"
-      >
-        <mat-icon>menu</mat-icon>
-      </button>
-
-      <app-header class="flex-1"></app-header>
+  <div class="flex-1 flex flex-col min-w-0">
+    <div class="sticky top-0 z-20 flex items-center h-14 w-full">
+      <app-header class="w-full h-full" (menuToggle)="toggleDrawer()"></app-header>
     </div>
 
-    <main class="flex-1 py-4 px-1 overflow-auto page-padding">
+    <main class="flex-1 py-4 overflow-auto page-padding min-w-0">
       <router-outlet></router-outlet>
     </main>
   </div>
