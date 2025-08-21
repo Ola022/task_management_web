@@ -50,6 +50,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 100vh;
     top: 0;
 }
+/* On small screens, make it full width */
+@media (max-width: 768px) {
+    .custom-sidenav-addMeetEvent {
+        width: 100vw;
+        left: 0;
+        right: 0;
+        padding: 16px 8px;
+    }
+}
 
 .custom-sidenave-addTask {
     position: fixed;
@@ -66,6 +75,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     top: 0;
     // bottom: 5;
     transition: all .5s;
+}
+/* On small screens, make it full width */
+@media (max-width: 768px) {
+    .custom-sidenave-addTask {
+        width: 100vw;
+        left: 0;
+        right: 0;
+        padding: 16px 8px;
+    }
 }
 
 .sidenav {
