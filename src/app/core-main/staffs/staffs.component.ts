@@ -103,7 +103,8 @@ openCreate(){
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleteUser(data);
+        this.app.snackbar.open('Oppps!, Still working on the functionality, Try later?', 'Close', { duration: 3000 });
+        // this.deleteUser(data);
       }
     });
   }
