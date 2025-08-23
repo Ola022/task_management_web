@@ -21,12 +21,12 @@ export class ProjectComponent implements OnInit {
   selectedProject: any = null; // Initialize with null to indicate no task is selected
   openSideNav: boolean = false;
   allTasks: any[] = []
-  users: any;
+  users: any[] = [];
 
   constructor(
     private app: AppService,
     private dialog: MatDialog,
-
+private router: Router,
   ) {
     this.userInfo = this.app.getFromStore(Constant.USER_INFO);
     this.userId = this.userInfo.id
@@ -106,7 +106,7 @@ export class ProjectComponent implements OnInit {
   }
   
 getname(id: number){
-  let name = this.users.find(u => u.id == id)?.name
+  let name = this.users.find(u => u.id == id)?.full_name
   return name
 
 }
