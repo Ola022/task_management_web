@@ -56,7 +56,7 @@ onFileChange(event: any) {
     // generate preview
     const reader = new FileReader();
     reader.onload = () => this.previewUrl = reader.result;
-    #reader.readAsDataURL(this.imageFile);
+    //reader.readAsDataURL(this.imageFile);
   } else {
     this.imageFile = undefined;
     this.previewUrl = null;
