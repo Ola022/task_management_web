@@ -48,12 +48,22 @@ users: any;
     console.log(this.projectID, this.isEditable)
     
   }
-  onFileChange(event: any) {
-    if (event.target.files && event.target.files.length > 0) {
-      this.imageFile = event.target.files[0];
-    } else {
-      this.imageFile = undefined;
-    }
+  
+   previewUrl: string | ArrayBuffer | null = null;
+onFileChange(event: any) {
+  if (event.target.files && event.target.files.length > 0) {
+    this.imageFile = event.target.files[0];
+
+    // generate preview
+    const reader = new FileReader();
+    reader.onload = () => this.previewUrl = reader.result;
+    reader.readAsDataURL(this.imageFile);
+  } else {
+    this.imageFile = undefined;
+    this.previewUrl = null;
+  
+}
+
   }
 
   closeaddProjecgt() {
@@ -90,6 +100,11 @@ users: any;
 
 
   addProject() {
+    if (!this.project.name || !this.project.description || !this.project.due_date) {
+    this.errorMessage = 'All fields are required';
+    return;
+  }
+
     if (this.projectID > 0) {
       this.updateProject();
     }
