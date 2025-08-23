@@ -106,14 +106,13 @@ export class ProjectComponent implements OnInit {
   }
   
 getname(id: number){
-  let name = this.projects.find(p => p.id == id)?.name
+  let name = this.users.find(u => u.id == id)?.name
   return name
 
 }
   // VIEW
   viewProject(project: any): void {
-
-    // navigate or open dialog if you want
+  this.router.navigate(['/projects', project.id]);
   }
  openDeleteDialog(data: any) {
     let id = data?.id
