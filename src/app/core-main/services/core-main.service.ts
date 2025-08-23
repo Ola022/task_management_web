@@ -26,9 +26,12 @@ export class CoreMainService {
 
 
 
-
+createProject(userId: number, data: FormData): Observable<any> {
+  return this.http.post<any>(`${this.url}project/create/${userId}`, data)
+    .pipe(catchError(err => this.base.errorHandler(err)));
+}
   // 2. Create new project (multipart form-data)
-  createProject(userId: number, project: any, image?: File): Observable<any> {
+  createProjectt(userId: number, project: any, image?: File): Observable<any> {
     const formData = new FormData();
     formData.append('name', project.name);
     formData.append('description', project.description || '');
