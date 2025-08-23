@@ -6,10 +6,16 @@ import { SharedModule } from '../../shared/shared.module';
 import { AddTaskComponent } from './add-task/add-task.component';
 
 import { TaskConfirmDialogComponent } from './task-confirm-dialog/task-confirm-dialog.component';
+import { ProjectComponent } from './project/project.component';
+import { AddProjectComponent } from './project/add-project/add-project.component';
 
 export const tasksRoutes: Routes = [
   {
     path: '',
+    component: ProjectComponent
+  },
+  {
+    path: 'tasks/:id',
     component: TasksComponent
   },
 ];
@@ -20,7 +26,9 @@ export const tasksRoutes: Routes = [
     TasksComponent,
     AddTaskComponent,
     
-    TaskConfirmDialogComponent
+    TaskConfirmDialogComponent,
+          ProjectComponent,
+          AddProjectComponent
   ],
   imports: [
     CommonModule,    

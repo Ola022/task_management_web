@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { Constant } from '../../../resources/constants';
 import { AppService } from '../../../app.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-task',
@@ -32,6 +33,7 @@ export class AddTaskComponent implements OnInit {
   userInfo: any;
   userId!: number
   userName!: string;
+  projectId: number = 0
 
   taskTitle: string = 'Add Task'; // Default task title
   action: string = 'Create Task'; // Default action is Add Task 
@@ -40,11 +42,14 @@ export class AddTaskComponent implements OnInit {
   @Input() taskID: number = 0;  // receives from parent
   @Output() public close: EventEmitter<any> = new EventEmitter<any>()
   @Output() public refresh: EventEmitter<any> = new EventEmitter<any>()
-  constructor(private app: AppService) {
+  constructor(private app: AppService, private route: ActivatedRoute,) {
 
   }
 
   ngOnInit(): void {
+    
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.projectId = idParam ? +idParam : 0; 
     this.getAllUsers()
     if (this.taskID > 0) {
       this.taskTitle = 'Edit Task'; // Change title if taskID is provided
@@ -103,7 +108,7 @@ export class AddTaskComponent implements OnInit {
       this.task.created_at = Date.now().toString()
       console.log(this.task);
 
-      this.app.coreMainService.createTask(this.userId, this.task).subscribe({
+      this.app.coreMainService.createTask(this.projectId, this.userId, this.task).subscribe({
         next: (res: any) => {
           this.loadingSpinner = false;
           if (res['message'] == Constant.SUCCESS) {

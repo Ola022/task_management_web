@@ -3,6 +3,7 @@ import { Constant } from '../../resources/constants';
 import { MatDialog } from '@angular/material/dialog';
 import { AppService } from '../../app.service';
 import { TaskConfirmDialogComponent } from './task-confirm-dialog/task-confirm-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 interface Task {
   id: number;
   [key: string]: any;
@@ -55,7 +56,7 @@ export class TasksComponent implements OnInit {
   userId!: number
   selectedTaskID: number = 0; // Initialize with a default value
   selectedTask: any = null; // Initialize with null to indicate no task is selected
-
+  projectId: number =0;
   allTasks: any[] = []
   allTasksReseved: any[] = []
 
@@ -63,13 +64,16 @@ export class TasksComponent implements OnInit {
   constructor(
     private app: AppService,
     private dialog: MatDialog,
-
+    private route: ActivatedRoute,
   ) {
     this.userInfo = this.app.getFromStore(Constant.USER_INFO);
     this.userId = this.userInfo.id
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.projectId = idParam ? +idParam : 0; // The + converts string to number
+    
     this.getAllUsers()
     this.getAllTask()
   }
@@ -157,7 +161,7 @@ export class TasksComponent implements OnInit {
 
   getAllTask() {
     this.errorMessage = '';
-    this.app.coreMainService.getAllTasks(this.userId)
+    this.app.coreMainService.getAllTasks(this.projectId, this.userId)
       .subscribe({
         next: (res: any) => {
           this.loadingSpinner = false;

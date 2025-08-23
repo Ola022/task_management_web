@@ -1,0 +1,32 @@
+<div class="p-6 w-96">
+  <h2 class="text-xl font-semibold mb-4">Add New Project</h2>
+
+  <mat-form-field class="w-full mb-4" appearance="outline">
+    <mat-label>Project Name</mat-label>
+    <input matInput [(ngModel)]="project.name" />
+  </mat-form-field>
+
+  <mat-form-field class="w-full mb-4" appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea matInput rows="3" [(ngModel)]="project.description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="w-full mb-4" appearance="outline">
+    <mat-label>Due Date</mat-label>
+    <input matInput type="date" [(ngModel)]="project.due_date" />
+  </mat-form-field>
+
+  <div class="mb-4">
+    <label class="block text-sm font-medium">Upload Image</label>
+    <input type="file" (change)="onFileChange($event)" class="mt-2" />
+  </div>
+
+  <div class="flex justify-end gap-2">
+    <button mat-stroked-button (click)="closeaddProjecgt()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="addProject()" [disabled]="loadingSpinner">
+      Save
+    </button>
+  </div>
+
+  <p *ngIf="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
+</div>

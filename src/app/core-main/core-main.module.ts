@@ -29,7 +29,7 @@ export const coreMainRoutes: Routes = [
            ),
      },
       {
-         path: 'tasks',
+         path: 'projects',
          loadChildren: () =>
            import('./tasks/tasks.module').then(
              (m) => m.TasksModule
