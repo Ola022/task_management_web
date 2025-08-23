@@ -17,9 +17,14 @@
   </mat-form-field>
 
   <div class="mb-4">
-    <label class="block text-sm font-medium">Upload Image</label>
-    <input type="file" (change)="onFileChange($event)" class="mt-2" />
+  <mat-label>Upload Image</mat-label>
+  <input type="file" accept="image/*" (change)="onFileChange($event)" />
+
+  <div *ngIf="previewUrl" class="mt-2">
+    <img [src]="previewUrl" alt="Preview" class="w-32 h-32 object-cover border rounded" />
   </div>
+</div>
+
 
   <div class="flex justify-end gap-2">
     <button mat-stroked-button (click)="closeaddProjecgt()">Cancel</button>
