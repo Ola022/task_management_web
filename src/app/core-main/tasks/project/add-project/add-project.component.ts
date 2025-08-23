@@ -17,8 +17,7 @@ users: any;
   userName!: string;
 
   project: any = { name: '', description: '', due_date: '' };
-  imageFile: File | undefined = undefined;
-  
+  imageFile: File | null = null;
 
   taskTitle: string = 'Add Task'; // Default task title
   action: string = 'Create Task'; // Default action is Add Task 
@@ -59,7 +58,7 @@ onFileChange(event: any) {
     reader.onload = () => this.previewUrl = reader.result;
     reader.readAsDataURL(this.imageFile);
   } else {
-    this.imageFile = undefined;
+    this.imageFile = null;
     this.previewUrl = null;
   
 }
