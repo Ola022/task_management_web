@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppService } from '../../../app.service';
 import { Constant } from '../../../resources/constants';
 import { VConfirmationComponent } from '../../v-confirmation/v-confirmation.component';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-project',
