@@ -17,7 +17,7 @@ users: any;
   userName!: string;
 
   project: any = { name: '', description: '', due_date: '' };
-  imageFile: File | null = null;
+  imageFile: File | undefined = undefined;
 
   taskTitle: string = 'Add Task'; // Default task title
   action: string = 'Create Task'; // Default action is Add Task 
@@ -58,7 +58,7 @@ onFileChange(event: any) {
     reader.onload = () => this.previewUrl = reader.result;
     reader.readAsDataURL(this.imageFile);
   } else {
-    this.imageFile = null;
+    this.imageFile = undefined;
     this.previewUrl = null;
   
 }
@@ -108,10 +108,17 @@ onFileChange(event: any) {
       this.updateProject();
     }
     else {
-     
+     const formData = new FormData();
+  formData.append('name', this.project.name);
+  formData.append('description', this.project.description);
+  formData.append('due_date', this.project.due_date || '');
+
+  if (this.imageFile) {
+    formData.append('image', this.imageFile); // Safe, TS knows it's defined
+  }
     this.loadingSpinner = true;
     this.errorMessage = '';
-      this.app.coreMainService.createProject(this.userId, this.project, this.imageFile).subscribe({
+      this.app.coreMainService.createProject(this.userId, formData).subscribe({
         next: (res: any) => {
           this.loadingSpinner = false;
           if (res['message'] == Constant.SUCCESS) {
