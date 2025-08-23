@@ -15,7 +15,7 @@ export const tasksRoutes: Routes = [
     component: ProjectComponent
   },
   {
-    path: 'tasks/:id',
+    path: ':id',
     component: TasksComponent
   },
 ];
