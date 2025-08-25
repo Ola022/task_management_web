@@ -15,7 +15,8 @@ export const tasksRoutes: Routes = [
     component: ProjectComponent
   },
   {
-    path: ':id', component: TasksComponent
+    path: ':id',
+    component: TasksComponent
   },
 ];
 
@@ -33,8 +34,7 @@ export const tasksRoutes: Routes = [
     CommonModule,    
     SharedModule,
     RouterModule.forChild(tasksRoutes)
-  ],
-    exports: [RouterModule]
+  ]
 })
 
 

@@ -39,7 +39,6 @@ createProject(userId: number, data: FormData): Observable<any> {
     if (image) {
       formData.append('image', image, image.name);
     }
-
     return this.http.post<any>(`${this.url}create/${userId}`, formData)
       .pipe(catchError(err => this.base.errorHandler(err)));
   }
@@ -54,8 +53,8 @@ createProject(userId: number, data: FormData): Observable<any> {
   }
 
   // 3. Get project details
-  getProjectDetail(projectId: number, userId: number): Observable<any> {
-    return this.http.get<any>(`${this.url}project/detail/${projectId}/${userId}`)
+  getProjectDetail( userId: number, projectId: number): Observable<any> {
+    return this.http.get<any>(`${this.url}project/${projectId}/${userId}`)
       .pipe(catchError(err => this.base.errorHandler(err)));
   }
 
@@ -69,7 +68,7 @@ createProject(userId: number, data: FormData): Observable<any> {
       formData.append('image', image, image.name);
     }
 
-    return this.http.put<any>(`${this.url}update/${userId}/${projectId}`, formData)
+    return this.http.put<any>(`${this.url}project/update/${userId}/${projectId}`, formData)
       .pipe(catchError(err => this.base.errorHandler(err)));
   }
 

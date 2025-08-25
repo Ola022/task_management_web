@@ -8,7 +8,7 @@ import { Constant } from '../../../../resources/constants';
   styleUrl: './add-project.component.scss'
 })
 export class AddProjectComponent {
-users: any;
+  users: any[] = [];
   loadingSpinner!: boolean;
   errorMessage!: string;
   successMessage!: string;
@@ -17,10 +17,10 @@ users: any;
   userName!: string;
 
   project: any = { name: '', description: '', due_date: '' };
-  imageFile: File | undefined = undefined;
+  imageFile: File | null = null; // FIXED: use null consistently, not undefined
 
-  taskTitle: string = 'Add Task'; // Default task title
-  action: string = 'Create Task'; // Default action is Add Task 
+  taskTitle = 'Add Task'; // Default task title
+  action = 'Create Task'; // Default action is Add Task 
   isEditable: boolean = true
 
   @Input() projectID: number = 0;  // receives from parent
@@ -31,46 +31,48 @@ users: any;
   }
 
   ngOnInit(): void {
+
+    this.userInfo = this.app.getFromStore(Constant.USER_INFO);
+    this.userId = this.userInfo.id
+    this.userName = this.userInfo.full_name
     this.getAllUsers()
     if (this.projectID > 0) {
       this.taskTitle = 'Edit Project'; // Change title if projectID is provided
       this.action = 'Save Changes'; // Change action to Edit
       this.isEditable = false
-      
+
       this.getProjectDetails();
     }
-    else {
-      this.userInfo = this.app.getFromStore(Constant.USER_INFO);
-      this.userId = this.userInfo.id
-      this.userName = this.userInfo.full_name
-    }
-    console.log(this.projectID, this.isEditable)
-    
+
+    console.log(this.projectID, this.isEditable, this.userId)
+
   }
-  
-   previewUrl: string | ArrayBuffer | null = null;
-onFileChange(event: any) {
-  if (event.target.files && event.target.files.length > 0) {
-    this.imageFile = event.target.files[0];
 
-    // generate preview
-    const reader = new FileReader();
-    reader.onload = () => this.previewUrl = reader.result;
-    //reader.readAsDataURL(this.imageFile);
-  } else {
-    this.imageFile = undefined;
-    this.previewUrl = null;
-  
-}
+  previewUrl: string | ArrayBuffer | null = null;
 
+  onFileChange(event: any) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.imageFile = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => this.previewUrl = reader.result;
+      reader.readAsDataURL(this.imageFile);
+    } else {
+      this.imageFile = null;
+      this.previewUrl = null;
+
+    }
   }
 
   closeaddProjecgt() {
     this.close.emit()
   }
+
   allowEdit() {
     this.isEditable = true
   }
+
   getUserById(userId: number) {
     if (!this.users) return null;
     return this.users.find((user: any) => user.id === userId) || null;
@@ -79,6 +81,7 @@ onFileChange(event: any) {
   getAllUsers(): void {
     this.loadingSpinner = true;
     this.errorMessage = '';
+
     this.app.coreMainService.getAllUsers()
       .subscribe({
         next: (res: any) => {
@@ -97,27 +100,26 @@ onFileChange(event: any) {
       });
   }
 
-
   addProject() {
     if (!this.project.name || !this.project.description || !this.project.due_date) {
-    this.errorMessage = 'All fields are required';
-    return;
-  }
+      this.errorMessage = 'All fields are required';
+      return;
+    }
 
     if (this.projectID > 0) {
       this.updateProject();
     }
     else {
-     const formData = new FormData();
-  formData.append('name', this.project.name);
-  formData.append('description', this.project.description);
-  formData.append('due_date', this.project.due_date || '');
+      const formData = new FormData();
+      formData.append('name', this.project.name);
+      formData.append('description', this.project.description);
+      formData.append('due_date', this.project.due_date || '');
 
-  if (this.imageFile) {
-    formData.append('image', this.imageFile); // Safe, TS knows it's defined
-  }
-    this.loadingSpinner = true;
-    this.errorMessage = '';
+      if (this.imageFile) {
+        formData.append('image', this.imageFile); // Safe, TS knows it's defined
+      }
+      this.loadingSpinner = true;
+      this.errorMessage = '';
       this.app.coreMainService.createProject(this.userId, formData).subscribe({
         next: (res: any) => {
           this.loadingSpinner = false;
@@ -138,61 +140,69 @@ onFileChange(event: any) {
   }
 
   updateProject() {
-  this.loadingSpinner = true;
-  this.errorMessage = '';
+    this.loadingSpinner = true;
+    this.errorMessage = '';
 
-  // Ensure userId is set
-  this.project.user_id = this.userId;
+    // Ensure userId is set
+    this.project.user_id = this.userId;    
+    this.app.coreMainService.updateProject(this.userId, this.projectID, this.project, this.imageFile || undefined)
+      .subscribe({
+        next: (res: any) => {
+          this.loadingSpinner = false;
+          if (res['message'] == Constant.SUCCESS) {
+            this.app.snackbar.open(res['message'], 'Close', { duration: 3000 });
+            this.refresh.emit(); // notify parent to reload projects
+          } else {
+            this.errorMessage = res['data'].error || 'Something went wrong';
+          }
+        },
+        error: (error) => {
+          console.error(error);
+          this.loadingSpinner = false;
+          this.errorMessage = Constant.ERROR_MSG || 'Failed to update project';
+        },
+      });
+  }
 
-  this.app.coreMainService.updateProject(this.userId, this.projectID, this.project, this.imageFile)
-    .subscribe({
-      next: (res: any) => {
-        this.loadingSpinner = false;
-        if (res['message'] == Constant.SUCCESS) {
-          this.app.snackbar.open(res['message'], 'Close', { duration: 3000 });
-          this.refresh.emit(); // notify parent to reload projects
-        } else {
-          this.errorMessage = res['data'].error || 'Something went wrong';
-        }
-      },
-      error: (error) => {
-        console.error(error);
-        this.loadingSpinner = false;
-        this.errorMessage = Constant.ERROR_MSG || 'Failed to update project';
-      },
-    });
-}
+  getProjectDetails() {
+    this.loadingSpinner = true;
+    this.errorMessage = '';
 
-getProjectDetails() {
-  this.loadingSpinner = true;
-  this.errorMessage = '';
+    console.log(this.projectID, this.userId)
+    this.app.coreMainService.getProjectDetail(this.userId, this.projectID)
+      .subscribe({
+        next: (res: any) => {
+          this.loadingSpinner = false;
+          if (res['message'] == Constant.SUCCESS) {
+            this.project = res['data'].project;
 
-  
-  this.app.coreMainService.getProjectDetail(this.projectID, this.userId)
-    .subscribe({
-      next: (res: any) => {
-        this.loadingSpinner = false;
-        if (res['message'] == Constant.SUCCESS) {
-          this.project = res['data'].project;
+            this.previewUrl = this.project.image_url;
 
-          // format dates to yyyy-mm-dd for form inputs
-          this.project.due_date = this.project.due_date
-            ? new Date(this.project.due_date).toISOString().split('T')[0]
-            : '';
-          this.project.created_at = this.project.created_at
-            ? new Date(this.project.created_at).toISOString().split('T')[0]
-            : '';
+            // parse DDMMYYYY -> yyyy-MM-dd
+            if (this.project.due_date && this.project.due_date.length === 8) {
+              const day = this.project.due_date.substring(0, 2);
+              const month = this.project.due_date.substring(2, 4);
+              const year = this.project.due_date.substring(4, 8);
+              this.project.due_date = `${year}-${month}-${day}`;
+            } else {
+              this.project.due_date = '';
+            }
 
-          console.log('Project details:', this.project);
-        } else {
-          this.errorMessage = res['data'];
-        }
-      },
-      error: (error) => {
-        console.error(error);
-        this.loadingSpinner = false;
-        this.errorMessage = Constant.ERROR_MSG;
-      },
-    });
-}
+            // created_at is ISO from backend, format it
+            this.project.created_at = this.project.created_at
+              ? new Date(this.project.created_at).toISOString().split('T')[0]
+              : '';
+
+            console.log('Project details:', this.project);
+          } else {
+            this.errorMessage = res['data'];
+          }
+        },
+        error: (error) => {
+
+          this.loadingSpinner = false;
+          this.errorMessage = Constant.ERROR_MSG;
+        },
+      });
+  }
 }

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AppService } from '../../app.service';
-import { TaskConfirmDialogComponent } from '../tasks/task-confirm-dialog/task-confirm-dialog.component';
 import { ViewMeetDialogComponent } from './view-meet-dialog/view-meet-dialog.component';
 import { UpdateMeetStatusComponent } from './update-meet-status/update-meet-status.component';
 import { Constant } from '../../resources/constants';
@@ -27,30 +26,8 @@ export class MeetingsComponent {
     status: 'Upcoming',
     types: "meetings",
   }];
-  meeting = [
-    { id: 2,
-      title: 'Team Standup',
-      organizer: 'Jane Doe',
-      participants: ['Alex', 'Mary', 'John'],
-      date: '2025-03-30T15:30:00',
-      agenda: 'Review tasks and blockers.',
-      locationType: 'online',
-      url: 'https://meet.google.com/abc-defg',
-      status: 'Ongoing'}
-  ]
-  mmeetings = [
-    {
-      id: 2,
-      title: 'Team Standup',
-      organizer: 'Jane Doe',
-      participants: ['Alex', 'Mary', 'John'],
-      date: '2025-03-30T15:30:00',
-      agenda: 'Review tasks and blockers.',
-      locationType: 'online',
-      url: 'https://meet.google.com/abc-defg',
-      status: 'Ongoing'
-    },   
-  ];
+  //meeting = [] 
+  // mmeetings = [];
   selectedDate: any;
   openSideNav: boolean = false;
   isSaved: boolean = false

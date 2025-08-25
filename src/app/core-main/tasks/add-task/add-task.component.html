@@ -86,7 +86,10 @@
 
         <div class="pt-4">
             <button mat-raised-button color="primary" class="w-full" [disabled]="!isEditable"
-                (click)="addTask()">{{action}}</button>
+                (click)="addTask()">
+                <mat-progress-spinner *ngIf="loadingSpinner" color="primary" diameter="18" mode="indeterminate">
+                                    </mat-progress-spinner> {{action}}
+            </button>
         </div>
     </div>
 </div>

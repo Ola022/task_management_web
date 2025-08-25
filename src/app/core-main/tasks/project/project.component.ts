@@ -22,7 +22,7 @@ export class ProjectComponent implements OnInit {
   openSideNav: boolean = false;
   allTasks: any[] = []
   users: any[] = [];
-
+selectStatus = 'all'
   constructor(
     private app: AppService,
     private dialog: MatDialog,
@@ -46,11 +46,10 @@ private router: Router,
     this.openSideNav = false
     this.getAllProjects()
   }
+  
   openAddProjectNav() {
     this.selectedProjectID = 0
-    this.openSideNav = true
-    console.log(this.selectedProjectID)
-
+    this.openSideNav = true    
   }
 
   editProject(project: any) {
@@ -112,7 +111,7 @@ getname(id: number){
 }
   // VIEW
   viewProject(project: any): void {
-  this.router.navigate(['/projects', project.id]);
+  this.router.navigate(['/app/projects', project.id]);
   }
  openDeleteDialog(data: any) {
     let id = data?.id

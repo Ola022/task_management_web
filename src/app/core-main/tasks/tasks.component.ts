@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Constant } from '../../resources/constants';
 import { MatDialog } from '@angular/material/dialog';
 import { AppService } from '../../app.service';
 import { TaskConfirmDialogComponent } from './task-confirm-dialog/task-confirm-dialog.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 interface Task {
   id: number;
   [key: string]: any;
@@ -44,6 +44,7 @@ export class TasksComponent implements OnInit {
     // You can implement a dialog service or use Angular Material Dialog here
     // For example: this.dialog.open(AddTaskDialogComponent);
   }
+  readonly panelOpenState = signal(false);
 
   users: any[] = [];
   loadingSpinner!: boolean;
@@ -65,6 +66,7 @@ export class TasksComponent implements OnInit {
     private app: AppService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
+    private router: Router,
   ) {
     this.userInfo = this.app.getFromStore(Constant.USER_INFO);
     this.userId = this.userInfo.id
@@ -106,7 +108,9 @@ export class TasksComponent implements OnInit {
     this.openCommentSideNav = true; // Open the side navigation
   }
 
-
+goback(): void {
+  this.router.navigate(['/app/projects']);
+  }
 
   getFirstName(user: any): string {
     return user.title + ' ' + user.full_name.split(' ')[0];
