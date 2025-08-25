@@ -1,249 +1,281 @@
 <!-- Filter Section -->
-<div class="flex items-center md:justify-between">
-    <button mat-icon-button (click)="goback()">
-        <mat-icon>highlight_off</mat-icon>
-    </button>
+<div class="pageContent">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+        <button mat-icon-button (click)="goback()">
+            <mat-icon>arrow_back_ios</mat-icon>
+        </button>
+        <div class="flex flex-col sm:flex-row flex-wrap gap-2 p-1 items-center">
+            <!-- Filter by User -->
+            <mat-form-field appearance="fill" class="min-w-[149px] w-full sm:w-auto">
+                <mat-label>Filter by User</mat-label>
+                <mat-select [(ngModel)]="selectedUser" (selectionChange)="filterTasksByUser()">
+                    <mat-option value="">All</mat-option>
+                    <mat-option *ngFor="let user of users" [value]="user">{{ getFirstName(user) }}</mat-option>
+                </mat-select>
+            </mat-form-field>
 
-    <div class="w-full flex flex-wrap gap-2 p-1 items-center">
-        <!-- Filter by User -->
-        <mat-form-field appearance="fill" class="min-w-[100px]">
-            <mat-label>Filter by User</mat-label>
-            <mat-select [(ngModel)]="selectedUser" (selectionChange)="filterTasksByUser()">
-                <mat-option value="">All</mat-option>
-                <mat-option *ngFor="let user of users" [value]="user">{{ getFirstName(user) }}</mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <!-- Filter by Priority -->
-        <mat-form-field appearance="fill" class="min-w-[100px]">
-            <mat-label>Filter by Priority</mat-label>
-            <mat-select [(ngModel)]="selectedPriority" (selectionChange)="filterTasksByPriority()">
-                <mat-option value="">All</mat-option>
-                <mat-option value="High">High</mat-option>
-                <mat-option value="Medium">Medium</mat-option>
-                <mat-option value="Low">Low</mat-option>
-            </mat-select>
-        </mat-form-field>
+            <!-- Filter by Priority -->
+            <mat-form-field appearance="fill" class="min-w-[149px] w-full sm:w-auto">
+                <mat-label>Filter by Priority</mat-label>
+                <mat-select [(ngModel)]="selectedPriority" (selectionChange)="filterTasksByPriority()">
+                    <mat-option value="">All</mat-option>
+                    <mat-option value="High">High</mat-option>
+                    <mat-option value="Medium">Medium</mat-option>
+                    <mat-option value="Low">Low</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
     </div>
 </div>
+
 <!-- Show loading spinner -->
 <div *ngIf="loadingSpinner" class="flex justify-center items-center py-8">
     <mat-spinner></mat-spinner>
 </div>
-
 <!-- Show error message -->
 <div *ngIf="errorMessage" class="alert alert-error text-xs my-2">
     <span>{{ errorMessage }}</span>
 </div>
 
 <div class="flex flex-wrap gap-2" *ngIf="!loadingSpinner && !errorMessage">
-
     <!-- Created Column -->
-    <div class="w-full md:w-[19%] bg-gray-50 rounded-sm p-4 shadow max-h-96 overflow-y-auto">
-        <div class="font-semibold text-base mb-3">📝 Created</div>
-        <ng-container *ngIf="createdTasks.length > 0; else noCreatedTask">
-            <div *ngFor="let task of createdTasks" class="bg-white p-2 rounded shadow shadow-gray-500 mb-1">
-                <div class="flex items-center justify-between">
-                    <div class="font-bold text-sm">{{ task?.title }}</div>
-                    <button mat-icon-button [matMenuTriggerFor]="menuCreated">
-                        <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
-                    </button>
-                </div>
-                <div class="flex justify-between items-center mt-2">
-                    <p class="text-xs text-gray-500">{{ getFirstName(getUserById(task?.assignee_id))}}</p>
-                    <p [ngClass]="{
-              'text-red-600': task.priority === 'High',
-              'text-yellow-600': task.priority === 'Medium',
-              'text-green-600': task.priority === 'Low'
-            }" class="text-xs font-semibold">
-                        {{ task.priority }}
-                    </p>
-                </div>
+    <mat-accordion class="w-full md:w-[19%] mb-2 p-1">
+        <mat-expansion-panel [expanded]="true" class="custom-panel bg-gray-50 shadow rounded-sm">
+            <mat-expansion-panel-header>
+                <span class="font-semibold text-base">📝 Created</span>
+            </mat-expansion-panel-header>            
+            <ng-container *ngIf="createdTasks.length > 0; else noCreatedTask" class="!p-2">
+                <div *ngFor="let task of createdTasks" class="bg-white p-2 rounded shadow shadow-gray-500 mb-1">
+                    <div class="flex items-center justify-between">
+                        <div class="font-bold text-sm">{{ task?.title }}</div>
+                        <button mat-icon-button [matMenuTriggerFor]="menuCreated">
+                            <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-xs text-gray-500">{{ getFirstName(getUserById(task?.assignee_id))}}</p>
+                        <p [ngClass]="{
+                            'text-red-600': task.priority === 'High',
+                            'text-yellow-600': task.priority === 'Medium',
+                            'text-green-600': task.priority === 'Low'
+                            }" class="text-xs font-semibold">
+                                            {{ task.priority }}
+                                        </p>
+                                    </div>
 
-                <mat-menu #menuCreated="matMenu">
-                    <button mat-menu-item (click)="editTask(task)">View Detail</button>
-                    <button mat-menu-item [matMenuTriggerFor]="menuMoveCreated">Move</button>
-                    <mat-menu #menuMoveCreated="matMenu">
-                        <button mat-menu-item (click)="openDialog('Progress', task)">In Progress</button>
-                        <button mat-menu-item (click)="openDialog('Blocked', task)">Blocked</button>
+                    <mat-menu #menuCreated="matMenu">
+                        <button mat-menu-item (click)="editTask(task)">View Detail</button>
+                        <button mat-menu-item [matMenuTriggerFor]="menuMoveCreated">Move</button>
+                        <mat-menu #menuMoveCreated="matMenu">
+                            <button mat-menu-item (click)="openDialog('Progress', task)">In Progress</button>
+                            <button mat-menu-item (click)="openDialog('Blocked', task)">Blocked</button>
+                        </mat-menu>
+                        <button mat-menu-item (click)="openComment(task)">Comment</button>
+                        <button mat-menu-item (click)="openDeleteDialog(task)">Delete</button>
                     </mat-menu>
-                    <button mat-menu-item (click)="openComment(task)">Comment</button>
-                    <button mat-menu-item (click)="openDeleteDialog(task)">Delete</button>
-                </mat-menu>
-            </div>
-        </ng-container>
+                </div>
+            </ng-container>
 
-        <ng-template #noCreatedTask>
-            <div class="bg-white p-3 rounded shadow text-center text-xs text-gray-400 italic">
-                No tasks yet
-            </div>
-        </ng-template>
-    </div>
+            <ng-template #noCreatedTask>
+                <div class="bg-white p-3 rounded shadow text-center text-xs text-gray-400 italic">
+                    No tasks yet
+                </div>
+            </ng-template>
+
+        </mat-expansion-panel>
+    </mat-accordion>
     <!-- In Progress Column -->
-    <div class="w-full md:w-[19%] bg-gray-50 rounded-sm p-4 shadow max-h-96 overflow-y-auto">
-        <div class="font-semibold text-base mb-3">🚧 In Progress</div>
-        <ng-container *ngIf="inProgressTasks.length > 0; else noProgressTask">
-            <div *ngFor="let task of inProgressTasks" class="bg-white p-2 rounded shadow shadow-blue-500 mb-1">
-                <div class="flex items-center justify-between">
-                    <div class="font-bold text-sm">{{ task?.title }}</div>
-                    <button mat-icon-button [matMenuTriggerFor]="menuInProgress">
-                        <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
-                    </button>
-                </div>
-                <div class="flex justify-between items-center mt-2">
-                    <p class="text-xs text-gray-500">{{ getFirstName(getUserById(task?.assignee_id))}}</p>
-                    <p [ngClass]="{
+    <mat-accordion class="w-full md:w-[19%] p-1 mb-2">
+        <mat-expansion-panel [expanded]="true" class="bg-gray-50 shadow rounded-sm custom-panel">
+            <mat-expansion-panel-header>
+                <span class="font-semibold text-base mb-3">🚧 In Progress</span>
+            </mat-expansion-panel-header>
+            <!--<div class="w-full md:w-[19%] bg-gray-50 rounded-sm p-4 shadow max-h-96 overflow-y-auto">
+        <div class="font-semibold text-base mb-3">🚧 In Progress</div>-->
+            <ng-container *ngIf="inProgressTasks.length > 0; else noProgressTask">
+                <div *ngFor="let task of inProgressTasks" class="bg-white p-2 rounded shadow shadow-blue-500 mb-1">
+                    <div class="flex items-center justify-between">
+                        <div class="font-bold text-sm">{{ task?.title }}</div>
+                        <button mat-icon-button [matMenuTriggerFor]="menuInProgress">
+                            <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-xs text-gray-500">{{ getFirstName(getUserById(task?.assignee_id))}}</p>
+                        <p [ngClass]="{
               'text-red-600': task.priority === 'High',
               'text-yellow-600': task.priority === 'Medium',
               'text-green-600': task.priority === 'Low'
             }" class="text-xs font-semibold">
-                        {{ task.priority }}
-                    </p>
-                </div>
-                <!-- In Progress Task Menu -->
-                <mat-menu #menuInProgress="matMenu">
-                    <button mat-menu-item (click)="editTask(task)">View Detail</button>
-                    <button mat-menu-item [matMenuTriggerFor]="menuMoveInProgress">Move</button>
-                    <mat-menu #menuMoveInProgress="matMenu">
-                        <button mat-menu-item (click)="openDialog('Blocked', task)">Blocked</button>
-                        <button mat-menu-item (click)="openDialog('Review', task)">Review</button>
+                            {{ task.priority }}
+                        </p>
+                    </div>
+                    <!-- In Progress Task Menu -->
+                    <mat-menu #menuInProgress="matMenu">
+                        <button mat-menu-item (click)="editTask(task)">View Detail</button>
+                        <button mat-menu-item [matMenuTriggerFor]="menuMoveInProgress">Move</button>
+                        <mat-menu #menuMoveInProgress="matMenu">
+                            <button mat-menu-item (click)="openDialog('Blocked', task)">Blocked</button>
+                            <button mat-menu-item (click)="openDialog('Review', task)">Review</button>
+                        </mat-menu>
+                        <button mat-menu-item (click)="openComment(task)">Comment</button>
+                        <button mat-menu-item (click)="openDeleteDialog(task)">Delete</button>
                     </mat-menu>
-                    <button mat-menu-item (click)="openComment(task)">Comment</button>
-                    <button mat-menu-item (click)="openDeleteDialog(task)">Delete</button>
-                </mat-menu>
-            </div>
-        </ng-container>
+                </div>
+            </ng-container>
 
-        <ng-template #noProgressTask>
-            <div class="bg-white p-3 rounded shadow text-center text-xs text-gray-400 italic">
-                No tasks yet
-            </div>
-        </ng-template>
-    </div>
+            <ng-template #noProgressTask>
+                <div class="bg-white p-3 rounded shadow text-center text-xs text-gray-400 italic">
+                    No tasks yet
+                </div>
+            </ng-template>
+
+        </mat-expansion-panel>
+    </mat-accordion>
     <!-- Blocked Column -->
-    <div class="w-full md:w-[19%] bg-gray-50 rounded-md p-4 shadow max-h-96 overflow-y-auto">
-        <div class="font-semibold text-base mb-3">⛔ Blocked</div>
-        <ng-container *ngIf="blockedTasks.length > 0; else noBlockedTask">
-            <div *ngFor="let task of blockedTasks" class="bg-white p-2 rounded shadow shadow-yellow-300 mb-1">
-                <div class="flex items-center justify-between">
-                    <div class="font-bold text-sm">{{ task?.title }}</div>
-                    <button mat-icon-button [matMenuTriggerFor]="menuBlocked">
-                        <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
-                    </button>
-                </div>
-                <div class="flex justify-between items-center mt-2">
-                    <p class="text-xs text-gray-500">{{ getFirstName(getUserById(task?.assignee_id))}}</p>
-                    <p [ngClass]="{
+    <mat-accordion class="w-full md:w-[19%] p-1 mb-2">
+        <mat-expansion-panel [expanded]="true" class="bg-gray-50 shadow rounded-sm custom-panel">
+            <mat-expansion-panel-header>
+                <span class="font-semibold text-base mb-3">⛔ Blocked</span>
+            </mat-expansion-panel-header>
+            <!--<div class="w-full md:w-[19%] bg-gray-50 rounded-md p-4 shadow max-h-96 overflow-y-auto">
+        <div class="font-semibold text-base mb-3">⛔ Blocked</div>-->
+            <ng-container *ngIf="blockedTasks.length > 0; else noBlockedTask">
+                <div *ngFor="let task of blockedTasks" class="bg-white p-2 rounded shadow shadow-yellow-300 mb-1">
+                    <div class="flex items-center justify-between">
+                        <div class="font-bold text-sm">{{ task?.title }}</div>
+                        <button mat-icon-button [matMenuTriggerFor]="menuBlocked">
+                            <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-xs text-gray-500">{{ getFirstName(getUserById(task?.assignee_id))}}</p>
+                        <p [ngClass]="{
               'text-red-600': task.priority === 'High',
               'text-yellow-600': task.priority === 'Medium',
               'text-green-600': task.priority === 'Low'
             }" class="text-xs font-semibold">
-                        {{ task.priority }}
-                    </p>
-                </div>
-                <!-- Blocked Task Menu -->
-                <mat-menu #menuBlocked="matMenu">
-                    <button mat-menu-item (click)="editTask(task)">View Detail</button>
-                    <button mat-menu-item [matMenuTriggerFor]="menuMoveBlocked">Move</button>
-                    <mat-menu #menuMoveBlocked="matMenu">
-                        <button mat-menu-item (click)="openDialog('Progress', task)">In Progress</button>
-                        <button mat-menu-item (click)="openDialog('Review', task)">Review</button>
+                            {{ task.priority }}
+                        </p>
+                    </div>
+                    <!-- Blocked Task Menu -->
+                    <mat-menu #menuBlocked="matMenu">
+                        <button mat-menu-item (click)="editTask(task)">View Detail</button>
+                        <button mat-menu-item [matMenuTriggerFor]="menuMoveBlocked">Move</button>
+                        <mat-menu #menuMoveBlocked="matMenu">
+                            <button mat-menu-item (click)="openDialog('Progress', task)">In Progress</button>
+                            <button mat-menu-item (click)="openDialog('Review', task)">Review</button>
+                        </mat-menu>
+                        <button mat-menu-item (click)="openComment(task)">Comment</button>
+                        <button mat-menu-item (click)="openDeleteDialog(task)">Delete</button>
                     </mat-menu>
-                    <button mat-menu-item (click)="openComment(task)">Comment</button>
-                    <button mat-menu-item (click)="openDeleteDialog(task)">Delete</button>
-                </mat-menu>
-            </div>
-        </ng-container>
+                </div>
+            </ng-container>
 
-        <ng-template #noBlockedTask>
-            <div class="bg-white p-3 rounded shadow text-center text-xs text-gray-400 italic">
-                No tasks yet
-            </div>
-        </ng-template>
-    </div>
+            <ng-template #noBlockedTask>
+                <div class="bg-white p-3 rounded shadow text-center text-xs text-gray-400 italic">
+                    No tasks yet
+                </div>
+            </ng-template>
+
+        </mat-expansion-panel>
+    </mat-accordion>
 
     <!-- Review Column -->
-    <div class="w-full md:w-[19%] bg-gray-50 rounded-lg p-4 shadow max-h-96 overflow-y-auto">
-        <div class="font-semibold text-base mb-3 ">🔎 Review</div>
-        <ng-container *ngIf="toConfirmTasks.length > 0; else noConfirmTask">
-            <div *ngFor="let task of toConfirmTasks" class="bg-white p-2 rounded shadow shadow-purple-500 mb-1">
-                <div class="flex items-center justify-between">
-                    <div class="font-bold text-sm">{{ task?.title }}</div>
-                    <button mat-icon-button [matMenuTriggerFor]="menuToConfirm">
-                        <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
-                    </button>
-                </div>
-                <div class="flex justify-between items-center mt-2">
-                    <p class="text-xs text-gray-500">{{ getFirstName(getUserById(task?.assignee_id))}}</p>
-                    <p [ngClass]="{
+    <mat-accordion class="w-full md:w-[19%] p-1 mb-2">
+        <mat-expansion-panel [expanded]="true" class="bg-gray-50 shadow rounded-sm custom-panel">
+            <mat-expansion-panel-header>
+                <span class="font-semibold text-base mb-3 ">🔎 Review</span>
+            </mat-expansion-panel-header>
+            <!--<div class="w-full md:w-[19%] bg-gray-50 rounded-lg p-4 shadow max-h-96 overflow-y-auto">
+        <div class="font-semibold text-base mb-3 ">🔎 Review</div>-->
+            <ng-container *ngIf="toConfirmTasks.length > 0; else noConfirmTask">
+                <div *ngFor="let task of toConfirmTasks" class="bg-white p-2 rounded shadow shadow-purple-500 mb-1">
+                    <div class="flex items-center justify-between">
+                        <div class="font-bold text-sm">{{ task?.title }}</div>
+                        <button mat-icon-button [matMenuTriggerFor]="menuToConfirm">
+                            <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-xs text-gray-500">{{ getFirstName(getUserById(task?.assignee_id))}}</p>
+                        <p [ngClass]="{
               'text-red-600': task.priority === 'High',
               'text-yellow-600': task.priority === 'Medium',
               'text-green-600': task.priority === 'Low'
             }" class="text-xs font-semibold">
-                        {{ task.priority }}
-                    </p>
-                </div>
+                            {{ task.priority }}
+                        </p>
+                    </div>
 
-                <!-- Review Task Menu -->
-                <mat-menu #menuToConfirm="matMenu">
-                    <button mat-menu-item (click)="editTask(task)">View Detail</button>
-                    <button mat-menu-item [matMenuTriggerFor]="menuMoveToConfirm">Move</button>
-                    <mat-menu #menuMoveToConfirm="matMenu">
-                        <button mat-menu-item (click)="openDialog('Progress', task)">In Progress</button>
-                        <button mat-menu-item (click)="openDialog('Completed', task)">Completed</button>
+                    <!-- Review Task Menu -->
+                    <mat-menu #menuToConfirm="matMenu">
+                        <button mat-menu-item (click)="editTask(task)">View Detail</button>
+                        <button mat-menu-item [matMenuTriggerFor]="menuMoveToConfirm">Move</button>
+                        <mat-menu #menuMoveToConfirm="matMenu">
+                            <button mat-menu-item (click)="openDialog('Progress', task)">In Progress</button>
+                            <button mat-menu-item (click)="openDialog('Completed', task)">Completed</button>
+                        </mat-menu>
+                        <button mat-menu-item (click)="openComment(task)">Comment</button>
+                        <button mat-menu-item (click)="openDeleteDialog(task)">Delete</button>
                     </mat-menu>
-                    <button mat-menu-item (click)="openComment(task)">Comment</button>
-                    <button mat-menu-item (click)="openDeleteDialog(task)">Delete</button>
-                </mat-menu>
-            </div>
-        </ng-container>
+                </div>
+            </ng-container>
 
-        <ng-template #noConfirmTask>
-            <div class="bg-white p-3 rounded shadow text-center text-xs text-gray-400 italic">
-                No tasks yet
-            </div>
-        </ng-template>
-    </div>
+            <ng-template #noConfirmTask>
+                <div class="bg-white p-3 rounded shadow text-center text-xs text-gray-400 italic">
+                    No tasks yet
+                </div>
+            </ng-template>
+
+        </mat-expansion-panel>
+    </mat-accordion>
     <!-- Completed Column -->
-    <div class="w-full md:w-[19%] bg-gray-50 rounded-lg p-4 shadow max-h-96 overflow-y-auto">
-        <div class="font-semibold text-base mb-3">✅ Completed</div>
-        <ng-container *ngIf="completedTasks.length > 0; else noCompleteTask">
-            <div *ngFor="let task of completedTasks" class="bg-white p-2 rounded shadow shadow-green-400 mb-1">
-                <div class="flex items-center justify-between">
-                    <div class="font-bold text-sm">{{ task?.title }}</div>
-                    <button mat-icon-button [matMenuTriggerFor]="menuCompleted">
-                        <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
-                    </button>
-                </div>
-                <div class="flex justify-between items-center mt-2">
-                    <p class="text-xs text-gray-500">{{ getFirstName(getUserById(task?.assignee_id))}}</p>
-                    <p [ngClass]="{
+    <mat-accordion class="w-full md:w-[19%] p-1 mb-2">
+        <mat-expansion-panel [expanded]="true" class="bg-gray-50 shadow rounded-sm custom-panel">
+            <mat-expansion-panel-header>
+                <span class="font-semibold text-base mb-3">✅ Completed</span>
+            </mat-expansion-panel-header>
+            <!--<div class="w-full md:w-[19%] bg-gray-50 rounded-lg p-4 shadow max-h-96 overflow-y-auto">
+        <div class="font-semibold text-base mb-3">✅ Completed</div>-->
+            <ng-container *ngIf="completedTasks.length > 0; else noCompleteTask">
+                <div *ngFor="let task of completedTasks" class="bg-white p-2 rounded shadow shadow-green-400 mb-1">
+                    <div class="flex items-center justify-between">
+                        <div class="font-bold text-sm">{{ task?.title }}</div>
+                        <button mat-icon-button [matMenuTriggerFor]="menuCompleted">
+                            <mat-icon class="text-gray-500 text-base">more_vert</mat-icon>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <p class="text-xs text-gray-500">{{ getFirstName(getUserById(task?.assignee_id))}}</p>
+                        <p [ngClass]="{
               'text-red-600': task.priority === 'High',
               'text-yellow-600': task.priority === 'Medium',
               'text-green-600': task.priority === 'Low'
             }" class="text-xs font-semibold">
-                        {{ task.priority }}
-                    </p>
-                </div>
-                <!-- Completed Task Menu -->
-                <mat-menu #menuCompleted="matMenu">
-                    <button mat-menu-item (click)="editTask(task)">View Detail</button>
-                    <button mat-menu-item [matMenuTriggerFor]="menuMoveCompleted">Move</button>
-                    <mat-menu #menuMoveCompleted="matMenu">
-                        <button mat-menu-item (click)="openDialog('Review', task)">Review</button>
-                        <button mat-menu-item (click)="openDialog('Blocked', task)">Blocked</button>
+                            {{ task.priority }}
+                        </p>
+                    </div>
+                    <!-- Completed Task Menu -->
+                    <mat-menu #menuCompleted="matMenu">
+                        <button mat-menu-item (click)="editTask(task)">View Detail</button>
+                        <button mat-menu-item [matMenuTriggerFor]="menuMoveCompleted">Move</button>
+                        <mat-menu #menuMoveCompleted="matMenu">
+                            <button mat-menu-item (click)="openDialog('Review', task)">Review</button>
+                            <button mat-menu-item (click)="openDialog('Blocked', task)">Blocked</button>
+                        </mat-menu>
+                        <button mat-menu-item (click)="openComment(task)">Comment</button>
+                        <button mat-menu-item (click)="openDeleteDialog(task)">Delete</button>
                     </mat-menu>
-                    <button mat-menu-item (click)="openComment(task)">Comment</button>
-                    <button mat-menu-item (click)="openDeleteDialog(task)">Delete</button>
-                </mat-menu>
-            </div>
-        </ng-container>
-        <ng-template #noCompleteTask>
-            <div class="bg-white p-3 rounded shadow text-center text-xs text-gray-400 italic">
-                No tasks yet
-            </div>
-        </ng-template>
-    </div>
+                </div>
+            </ng-container>
+            <ng-template #noCompleteTask>
+                <div class="bg-white p-3 rounded shadow text-center text-xs text-gray-400 italic">
+                    No tasks yet
+                </div>
+            </ng-template>
+        </mat-expansion-panel>
+    </mat-accordion>
 </div>
 <!-- Add Task Button -->
 <div *ngIf="openSideNav" class="custom-sidenave-addTask">

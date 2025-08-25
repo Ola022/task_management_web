@@ -1,64 +1,103 @@
-<!-- Tasks Overview -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 mt-2">
+<div *ngIf="loadingSpinner" class="flex justify-center py-20">
+  <span class="loading loading-spinner loading-lg"></span>
+</div>
+<div *ngIf="errorMessage" class="alert alert-error text-xs">
+    <span>{{ errorMessage }}</span>
+</div>
+
+<div *ngIf="!loadingSpinner && !errorMessage" class="pageContent">
+  <div class="space-y-6 px-2 md:px-6 lg:px-12 py-6">
+
+    <!-- Overview Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center">
+      <div class="stat bg-base-200 rounded-xl shadow w-full max-w-xs mx-auto">
+        <div class="stat-title">Total Projects</div>
+        <div class="stat-value">{{ overview?.totalProjects }}</div>
+      </div>
+      <div class="stat bg-base-200 rounded-xl shadow w-full max-w-xs mx-auto">
+        <div class="stat-title">Active Projects</div>
+        <div class="stat-value text-success">{{ overview?.activeProjects }}</div>
+      </div>
+      <div class="stat bg-base-200 rounded-xl shadow w-full max-w-xs mx-auto">
+        <div class="stat-title">Inactive Projects</div>
+        <div class="stat-value text-error">{{ overview?.inactiveProjects }}</div>
+      </div>
+    <!--</div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center">-->
+      <div class="stat bg-base-200 rounded-xl shadow w-full max-w-xs mx-auto">
+        <div class="stat-title">Total Tasks</div>
+        <div class="stat-value">{{ overview?.totalTasks }}</div>
+      </div>
+      <div class="stat bg-base-200 rounded-xl shadow w-full max-w-xs mx-auto">
+        <div class="stat-title">Completed Tasks</div>
+        <div class="stat-value text-success">{{ overview?.completedTasks }}</div>
+      </div>
+      <div class="stat bg-base-200 rounded-xl shadow w-full max-w-xs mx-auto">
+        <div class="stat-title">Pending Tasks</div>
+        <div class="stat-value text-warning">{{ overview?.pendingTasks }}</div>
+      </div>
+    </div>
+
+    <!-- User-specific -->
+    <div class="text-lg font-bold">My Tasks</div>
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 justify-center">
+      <div class="card bg-base-200 shadow w-full max-w-xs mx-auto">
+        <div class="card-body">
+          <div class="card-title">Assigned</div>
+          <p class="text-2xl text-center font-bold">{{ user?.totalAssignedToMe }}</p>
+        </div>
+      </div>
+      <div class="card bg-base-200 shadow w-full max-w-xs mx-auto">
+        <div class="card-body">
+          <div class="card-title">Completed</div>
+          <p class="text-2xl text-center text-success font-bold">{{ user?.completedByMe }}</p>
+        </div>
+      </div>
+      <div class="card bg-base-200 shadow w-full max-w-xs mx-auto">
+        <div class="card-body">
+          <div class="card-title">Pending</div>
+          <p class="text-2xl text-center text-warning font-bold">{{ user?.pendingForMe }}</p>
+        </div>
+      </div>
+      <div class="card bg-base-200 shadow w-full max-w-xs mx-auto">
+        <div class="card-body">
+          <div class="card-title">Overdue</div>
+          <p class="text-2xl text-center text-error font-bold">{{ user?.overdueForMe }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Breakdown -->
+    <div class="text-base font-bold">Projects Breakdown</div>
+    <div class="overflow-y-auto overflow-x-auto mt-7" style="max-width: 92vw !important;">
+      <table class="table table-zebra min-w-[700px] w-full">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Total Tasks</th>
+            <th>Completed</th>
+            <th>Pending</th>
+            <th>Overdue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let project of projects">
+            <td>{{ project.name }}</td>
+            <td>
+              <span [class]="project.status === 'active' ? 'badge badge-success text-white' : 'badge badge-error text-white' ">
+                {{ project.status }}
+              </span>
+            </td>
+            <td>{{ project.totalTasks }}</td>
+            <td>{{ project.completedTasks }}</td>
+            <td>{{ project.pendingTasks }}</td>
+            <td class="text-error">{{ project.overdueTasks }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
   
-  <div class="card bg-sky-100 p-2 sm:p-4">
-    <div class="card-body p-2 sm:p-4">
-      <div class="flex justify-between items-center">
-        <span class="text-sky-700 text-base sm:text-lg font-semibold">📝 Created</span>
-        <span class="text-lg sm:text-2xl font-bold text-sky-700">{{ stats.created }}</span>
-      </div>
-    </div>
-  </div>
-  <div class="card bg-yellow-100 p-2 sm:p-4">
-    <div class="card-body p-2 sm:p-4">
-      <div class="flex justify-between items-center">
-        <span class="text-yellow-700 text-lg font-semibold">🚧 In Progress</span>
-        <span class="text-2xl font-bold text-yellow-700">{{ stats.inProgress }}</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card bg-red-100  p-2 sm:p-4">
-    <div class="card-body p-2 sm:p-4">
-      <div class="flex justify-between items-center">
-        <span class="text-red-700 text-lg font-semibold">⛔ Blocked</span>
-        <span class="text-2xl font-bold text-red-700">{{ stats.blocked }}</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card bg-purple-100  p-2 sm:p-4">
-    <div class="card-body p-2 sm:p-4">
-      <div class="flex justify-between items-center">
-        <span class="text-purple-700 text-lg font-semibold">🔎 To Confirm</span>
-        <span class="text-2xl font-bold text-purple-700">{{ stats.toConfirm }}</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card bg-green-100  p-2 sm:p-4">
-    <div class="card-body p-2 sm:p-4">
-      <div class="flex justify-between items-center">
-        <span class="text-green-700 text-lg font-semibold">✅ Completed</span>
-        <span class="text-2xl font-bold text-green-700">{{ stats.completed }}</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Recent Activities -->
-<div class="card bg-base-100 shadow-md">
-  <div class="card-body">
-    <h2 class="card-title text-lg mb-4">🔄 Recent Activity</h2>
-    <ul class="space-y-3 max-h-60 overflow-y-auto">
-      <li *ngFor="let activity of recentActivities" class="text-sm flex items-start gap-2">
-        <span class="text-primary">•</span>
-        <span>
-          <strong>{{ activity.user }}</strong> {{ activity.action }} 
-          <span class="italic text-gray-500">{{ activity.task }}</span>
-          <span class="block text-xs text-gray-400">{{ activity.time }}</span>
-        </span>
-      </li>
-    </ul>
-  </div>
-</div>
