@@ -9,8 +9,8 @@ export class BaseUrlService {
 //_baseUrl: string = 'https://fastapi-practice-d34t.onrender.com/'
 //_baseUrl: string = 'https://fastapi-practice-d34t.onrender.com/'
 //_baseUrl: string = "http://localhost:4200"
-_baseUrl: string = 'http://127.0.0.1:8000/'
-//_baseUrl: string = 'https://taskmanagementapi-production-d6fa.up.railway.app/'
+//_baseUrl: string = 'http://127.0.0.1:8000/'
+_baseUrl: string = 'https://taskmanagementapi-production-d6fa.up.railway.app/'
 
   constructor() { }
 
