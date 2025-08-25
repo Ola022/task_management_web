@@ -63,6 +63,17 @@ createProject(userId: number, data: FormData): Observable<any> {
     );
   }
 
+  
+  // 2. Get all projects for a user
+  getAllProjectsByStatus(userId: number, includeTasks: boolean = false): Observable<any> {
+    return this.http.get<any>(
+      `${this.url}project/all?user_id=${userId}&include_tasks=${includeTasks}`
+    ).pipe(
+      catchError(err => this.base.errorHandler(err))
+    );
+  }
+
+
   // 3. Get project details
   getProjectDetail( userId: number, projectId: number): Observable<any> {
     return this.http.get<any>(`${this.url}project/${projectId}/${userId}`)
