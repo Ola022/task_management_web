@@ -22,7 +22,7 @@ export class ProjectComponent implements OnInit {
   openSideNav: boolean = false;
   allTasks: any[] = []
   users: any[] = [];
-  selectStatus = 'all'
+  selectStatus = 'active'
   filteredProjects: any[] = [];  // filtered list
 
   constructor(

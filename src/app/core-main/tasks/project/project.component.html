@@ -19,7 +19,7 @@
   <div *ngIf="filteredProjects.length; else noProject" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <div
       *ngFor="let project of filteredProjects"
-      class="card bg-base-100 shadow-md hover:shadow-2xl transition-all"
+      class="card bg-base-100 shadow-md hover:shadow-2xl hover:mt-[-10px] transition-all"
     >
       <figure class="h-36 bg-gray-100">
         <img
@@ -35,6 +35,8 @@
           class="h-full w-full object-cover opacity-70"
         />
       </figure>
+      <div class="text-center text-xs text-white uppercase" [class]="project.status === 'active' ? 'bg-success' : 'bg-error' ">
+        {{ project.status }}</div>
       <div class="card-body">
         <div class="card-title">{{ project.name }}</div>
         <div class="text-sm text-gray-500">{{ project.description || 'No description' }}</div>
