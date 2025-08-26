@@ -35,7 +35,7 @@
           class="h-full w-full object-cover opacity-70"
         />
       </figure>
-      <div class="text-center text-xs text-white uppercase" [class]="project.status === 'active' ? 'bg-success' : 'bg-error' ">
+      <div class="text-center text-xs text-white capitalize" [class]="project.status === 'active' ? 'bg-success' : 'bg-error' ">
         {{ project.status }}</div>
       <div class="card-body">
         <div class="card-title">{{ project.name }}</div>
