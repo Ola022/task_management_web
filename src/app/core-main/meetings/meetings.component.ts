@@ -78,7 +78,7 @@ export class MeetingsComponent {
           next: (res: any) => {
             this.loadingSpinner = false;
             if (res['message'] == Constant.SUCCESS) {
-              this.meetings = res['data'].meetings || [];
+              this.meetings = res['data'].meetings.reverse() || [];
               if (this.meetings.length === 0) {
                 this.errorMessage = 'No meetings found.';
               }  

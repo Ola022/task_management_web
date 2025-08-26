@@ -67,7 +67,7 @@ export class DashboardComponent {
           this.loadingSpinner = false;
           if (res['message'] == Constant.SUCCESS) {            
             this.overview = res.data.overview;
-            this.projects = res.data.projects;
+            this.projects = res.data.projects.reverse();
             this.user = res.data.user;
           } else {            
             this.errorMessage = res['data'];

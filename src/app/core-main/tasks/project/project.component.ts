@@ -22,11 +22,13 @@ export class ProjectComponent implements OnInit {
   openSideNav: boolean = false;
   allTasks: any[] = []
   users: any[] = [];
-selectStatus = 'all'
+  selectStatus = 'all'
+  filteredProjects: any[] = [];  // filtered list
+
   constructor(
     private app: AppService,
     private dialog: MatDialog,
-private router: Router,
+    private router: Router,
   ) {
     this.userInfo = this.app.getFromStore(Constant.USER_INFO);
     this.userId = this.userInfo.id
@@ -39,17 +41,17 @@ private router: Router,
   }
 
   closeSidenav() {
-    this.openSideNav = false    
+    this.openSideNav = false
   }
 
   closeSidenavSaved() {
     this.openSideNav = false
     this.getAllProjects()
   }
-  
+
   openAddProjectNav() {
     this.selectedProjectID = 0
-    this.openSideNav = true    
+    this.openSideNav = true
   }
 
   editProject(project: any) {
@@ -65,7 +67,8 @@ private router: Router,
       next: (res: any) => {
         this.loadingSpinner = false;
         if (res['message'] === Constant.SUCCESS) {
-          this.projects = res['data'].projects;
+          this.projects = res['data'].projects.reverse();
+          this.applyFilter(); // show filtered immediately
         } else {
           this.projects = [];
           this.errorMessage = res['data'];
@@ -77,6 +80,16 @@ private router: Router,
       }
     });
   }
+  // Apply filter client-side
+  applyFilter(): void {
+    if (this.selectStatus === 'all') {
+      this.filteredProjects = [...this.projects];
+    } else {
+      this.filteredProjects = this.projects.filter(
+        p => p.status.toLowerCase() === this.selectStatus.toLowerCase()
+      );
+    }
+  }
 
   getAllUsers(): void {
     this.loadingSpinner = true;
@@ -86,7 +99,7 @@ private router: Router,
         next: (res: any) => {
           this.loadingSpinner = false;
           if (res['message'] == Constant.SUCCESS) {
-            this.users = res['data']           
+            this.users = res['data']
           } else {
             this.users = [];
             this.errorMessage = res['data'];
@@ -98,22 +111,22 @@ private router: Router,
         }
       });
   }
-  
+
   // ADD
   openAddProjectDialog(): void {
 
   }
-  
-getname(id: number){
-  let name = this.users.find(u => u.id == id)?.full_name
-  return name
 
-}
+  getname(id: number) {
+    let name = this.users.find(u => u.id == id)?.full_name
+    return name
+
+  }
   // VIEW
   viewProject(project: any): void {
-  this.router.navigate(['/app/projects', project.id]);
+    this.router.navigate(['/app/projects', project.id]);
   }
- openDeleteDialog(data: any) {
+  openDeleteDialog(data: any) {
     let id = data?.id
     const dialogRef = this.dialog.open(VConfirmationComponent, {
       width: '400px',
@@ -127,7 +140,7 @@ getname(id: number){
       }
     });
   }
-  
+
   // DELETE
   deleteProject(project: any): void {
     this.errorMessage = '';
