@@ -86,7 +86,7 @@
           <tr *ngFor="let project of projects">
             <td>{{ project.name }}</td>
             <td>
-              <span [class]="project.status === 'active' ? 'badge badge-success text-white' : 'badge badge-error text-white' ">
+              <span class="text-white capitalize" [class]="project.status === 'active' ? 'badge badge-success ' : 'badge badge-error ' ">
                 {{ project.status }}
               </span>
             </td>

@@ -15,7 +15,10 @@
         </div>
     <div class="flex justify-end gap-3 mt-6">
         <button mat-raised-button class="btn-ghost" (click)="onCancel()">Cancel</button>
-        <button mat-raised-button class=" btn-primary" (click)="onConfirm()">Yes, Move</button>
+        <button mat-raised-button class=" btn-primary" (click)="onConfirm()">
+            <mat-progress-spinner *ngIf="loadingSpinner" color="primary" diameter="18" mode="indeterminate">
+                </mat-progress-spinner>
+            <span *ngIf="!loadingSpinner"> Yes, Move</span></button>
     </div>
 </div>
 <div *ngIf="info.action ==  'delete'" class="p-6 max-w-sm text-center space-y-4">
@@ -27,5 +30,16 @@
     <div class="flex justify-end gap-3 mt-6">
         <button mat-raised-button class="btn-ghost" (click)="onCancel()">Cancel</button>
         <button mat-raised-button class="" (click)="deleteTask()">Yes, Delete</button>
+    </div>
+</div>
+<div *ngIf="info.action ==  'change_status'" class="p-6 max-w-sm text-center space-y-4">
+    <div class="text-lg font-semibold text-gray-800">Delete Task</div>
+    <div *ngIf="errorMessage" class="alert alert-error text-xs">
+            <span>{{ errorMessage }}</span>
+        </div>
+    <div class="text-sm text-gray-600">Are you sure you want to Update this project STATUS?</div>
+    <div class="flex justify-end gap-3 mt-6">
+        <button mat-raised-button class="btn-ghost" (click)="onCancel()">Cancel</button>
+        <button mat-raised-button class="" (click)="changeStatus()">Yes, Change</button>
     </div>
 </div>

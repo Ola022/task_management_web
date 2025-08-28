@@ -19,8 +19,8 @@ export class AddProjectComponent {
   project: any = { name: '', description: '', due_date: '' };
   imageFile: File | null = null; // FIXED: use null consistently, not undefined
 
-  taskTitle = 'Add Task'; // Default task title
-  action = 'Create Task'; // Default action is Add Task 
+  taskTitle = 'Add Project'; // Default task title
+  action = 'Create Project'; // Default action is Add Task 
   isEditable: boolean = true
 
   @Input() projectID: number = 0;  // receives from parent

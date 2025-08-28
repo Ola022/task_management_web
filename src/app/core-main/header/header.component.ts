@@ -1,4 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { AppService } from '../../app.service';
+import { Constant } from '../../resources/constants';
 
 @Component({
   selector: 'app-header',
@@ -7,7 +10,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class HeaderComponent {
   default_theme = 'light'
-  
+
   ngOnInit() {
     // Check localStorage for theme preference
     const storedTheme = localStorage.getItem('theme');
@@ -22,13 +25,17 @@ export class HeaderComponent {
   }
   @Output() menuToggle = new EventEmitter<void>();
 
-onMenuClick() {
-  this.menuToggle.emit();
-}
+  onMenuClick() {
+    this.menuToggle.emit();
+  }
+  constructor(    
+    private router: Router,
+    private app: AppService
+  ) { }
   showMenu = true
 
   switchThemeOld() {
-    
+
     document.documentElement.setAttribute('data-theme', this.default_theme);
     this.default_theme = this.default_theme === 'light' ? 'dark' : 'light';
 
@@ -53,5 +60,9 @@ onMenuClick() {
       this.default_theme = 'light';
     }
   }
-  
+  logout() {
+    this.app.removeFromStore(Constant.USER_INFO)
+    this.router.navigate(['/']);
+
+  }
 }

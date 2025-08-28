@@ -14,6 +14,7 @@ export class AddTaskComponent implements OnInit {
   statuses = ['Created', 'Progress', 'Blocked', 'Review', 'Completed'];
   priorities = ['High', 'Medium', 'Low'];
   task = {
+    project_id:0,
     title: '',
     description: '',
     assignor_id: 0,
@@ -104,14 +105,15 @@ export class AddTaskComponent implements OnInit {
       this.updateTask();
     }
     else {
+      this.loadingSpinner = true;
       this.task.assignor_id = this.userId
+      this.task.project_id = this.projectId
       this.task.created_at = Date.now().toString()
-      console.log(this.task);
-
-      this.app.coreMainService.createTask(this.projectId, this.userId, this.task).subscribe({
-        next: (res: any) => {
-          this.loadingSpinner = false;
+      
+      this.app.coreMainService.createTask( this.userId, this.task).subscribe({
+        next: (res: any) => {          
           if (res['message'] == Constant.SUCCESS) {
+            this.loadingSpinner = false;
             this.app.snackbar.open(res['message'], 'Close', { duration: 3000 });
             this.refresh.emit()
           } else {
@@ -132,10 +134,10 @@ export class AddTaskComponent implements OnInit {
     console.log(this.task);
     this.task.assignor_id = this.userId; // Ensure assignor_id is set to current user
     this.app.coreMainService.updateTask(this.taskID, this.userId, this.task).subscribe({
-      next: (res: any) => {
-        this.loadingSpinner = false;
+      next: (res: any) => {        
         if (res['message'] == Constant.SUCCESS) {
           this.app.snackbar.open(res['message'], 'Close', { duration: 3000 });
+          this.loadingSpinner = false;
           this.refresh.emit()
         } else {
           this.errorMessage = res['data'].error || 'Something went wrong';

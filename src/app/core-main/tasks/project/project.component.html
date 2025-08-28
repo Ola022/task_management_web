@@ -1,41 +1,44 @@
 <!-- project-list.component.html -->
 <div class="p-6">
   <!-- Header -->
-  <div class="flex justify-between items-center mb-6">    
+  <div class="flex justify-between items-center mb-6">
     <div class="text-2xl font-semibold text-primary">Projects</div>
-     <div class="overflow-x-auto  px-2">
-            <mat-form-field appearance="fill" class="w-full">
-                <mat-label>Filter by Status</mat-label>
-                <mat-select [(ngModel)]="selectStatus" (selectionChange)="applyFilter()">
-                    <mat-option value="all">All</mat-option>
-                    <mat-option value="active">Active</mat-option>
-                    <mat-option value="inactive">Inactive</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
+    <div class="overflow-x-auto  px-2">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Filter by Status</mat-label>
+        <mat-select [(ngModel)]="selectStatus" (selectionChange)="applyFilter()">
+          <mat-option value="all">All</mat-option>
+          <mat-option value="active">Active</mat-option>
+          <mat-option value="inactive">Inactive</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
 
   <!-- Projects Grid -->
   <div *ngIf="filteredProjects.length; else noProject" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div
-      *ngFor="let project of filteredProjects"
-      class="card bg-base-100 shadow-md hover:shadow-2xl hover:mt-[-10px] transition-all"
-    >
-      <figure class="h-36 bg-gray-100">
-        <img
-          *ngIf="project.image"
-          [src]="project.image_url"
-          alt="{{ project.name }}"
-          class="h-full w-full object-cover"
-        />
-        <img
-          *ngIf="!project.image"
-          src="assets/placeholder.png"
-          alt="No image"
-          class="h-full w-full object-cover opacity-70"
-        />
+    <div *ngFor="let project of filteredProjects"
+      class="card bg-base-100 shadow-md hover:shadow-2xl hover:mt-[-10px] transition-all">
+      <figure class="h-36 bg-gray-100 relative">
+        <!-- Menu Icon (top right) -->             
+        <button class="absolute top-2 right-2 z-10 bg-white/30 rounded-full"
+          [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openDialog(project.status, project)">
+             {{getOppStatus(project.status) }}</button>          
+          <button mat-menu-item (click)="editProject(project)">Edit</button>
+          <button mat-menu-item (click)="openDeleteDialog(project)">Delete</button>
+        </mat-menu>
+
+        <img *ngIf="project.image" [src]="project.image_url" alt="{{ project.name }}"
+          class="h-full w-full object-cover" />
+        <img *ngIf="!project.image" src="assets/images/placeholder.png" alt="No image"
+          class="h-full w-full object-cover opacity-70" />
       </figure>
-      <div class="text-center text-xs text-white capitalize" [class]="project.status === 'active' ? 'bg-success' : 'bg-error' ">
+      <div class="text-center text-xs text-white capitalize"
+        [class]="project.status === 'active' ? 'bg-success' : 'bg-error' ">
         {{ project.status }}</div>
       <div class="card-body">
         <div class="card-title">{{ project.name }}</div>
@@ -47,32 +50,35 @@
           <p><span class="font-medium">Created:</span> {{ project.created_at | date }}</p>
         </div>
 
-        <div class="card-actions justify-center mt-4">
-          <button mat-stroked-button color="primary" (click)="viewProject(project)">
-            View 
+        <div class="card-actions justify-center mt-4 w-full gap-2">          
+          <button mat-stroked-button color="primary" class="w-full" (click)="viewProject(project)">
+            View
+          </button>
+          <!--<button mat-stroked-button color="primary" class="capitalize" (click)="openDialog(project.status, project)">
+            {{getOppStatus(project.status) }}
           </button>
           <button mat-stroked-button color="accent" (click)="editProject(project)">
-            Edit 
+            Edit
           </button>
           <button mat-stroked-button color="warn" (click)="openDeleteDialog(project)">
-            Delete 
-          </button>
+            Delete
+          </button>-->
         </div>
       </div>
     </div>
   </div>
   <ng-template #noProject>
-  <div class="text-gray-400 italic text-center mt-4">No projects available</div>
-</ng-template>
+    <div class="text-gray-400 italic text-center mt-4">No projects available</div>
+  </ng-template>
 </div>
 <!-- Add Comment -->
 <div *ngIf="openSideNav" class="custom-sidenav-comment">
-    <app-add-project class="full-width" (close)="closeSidenav()" (refresh)="closeSidenavSaved()" [projectID]="selectedProjectID"
-        class="full-width"></app-add-project>
+  <app-add-project class="full-width" (close)="closeSidenav()" (refresh)="closeSidenavSaved()"
+    [projectID]="selectedProjectID" class="full-width"></app-add-project>
 </div>
 
 <div class="fixed bottom-4 right-4">
-    <button mat-fab color="primary" (click)="openAddProjectNav()">
-        <mat-icon>add</mat-icon>
-    </button>
+  <button mat-fab color="primary" (click)="openAddProjectNav()">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

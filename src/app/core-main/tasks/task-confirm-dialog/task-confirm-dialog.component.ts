@@ -9,7 +9,7 @@ import { Constant } from '../../../resources/constants';
   styleUrl: './task-confirm-dialog.component.scss'
 })
 export class TaskConfirmDialogComponent implements OnInit {  
-  loadingSpinner!: boolean;
+  loadingSpinner: boolean =false;
   errorMessage!: string;
 
   constructor(
@@ -35,9 +35,36 @@ export class TaskConfirmDialogComponent implements OnInit {
     this.loadingSpinner = true;
     this.errorMessage = '';
     this.app.coreMainService.updateTaskStatus(this.info.taskid, this.info.moveto, this.info.userID).subscribe({
-      next: (res: any) => {
-        this.loadingSpinner = false;
+      next: (res: any) => {        
         if (res['message'] == Constant.SUCCESS) {
+          this.loadingSpinner = false;
+          this.app.snackbar.open(res['message'], 'Close', { duration: 3000 });
+          this.dialogRef.close(true);
+        } else {
+          this.errorMessage = res['data'].error || 'Something went wrong';
+        }
+      },
+      error: (error) => {
+        console.error(error);
+        this.loadingSpinner = false;
+        this.errorMessage = Constant.ERROR_MSG || 'Failed to confirm task';
+      },
+    });
+        
+  }
+
+   changeStatus(): void {
+    if (!this.info || !this.info.taskid || !this.info.moveto) {
+      this.errorMessage = 'Invalid task information';
+      return;
+    }
+      
+    this.loadingSpinner = true;
+    this.errorMessage = '';
+    this.app.coreMainService.updateProjectStatus(this.info.taskid, this.info.moveto, this.info.userID).subscribe({
+      next: (res: any) => {        
+        if (res['message'] == Constant.SUCCESS) {
+          this.loadingSpinner = false;
           this.app.snackbar.open(res['message'], 'Close', { duration: 3000 });
           this.dialogRef.close(true);
         } else {

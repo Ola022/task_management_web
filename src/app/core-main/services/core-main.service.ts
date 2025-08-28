@@ -37,10 +37,10 @@ export class CoreMainService {
 
 
 
-createProject(userId: number, data: FormData): Observable<any> {
-  return this.http.post<any>(`${this.url}project/create/${userId}`, data)
-    .pipe(catchError(err => this.base.errorHandler(err)));
-}
+  createProject(userId: number, data: FormData): Observable<any> {
+    return this.http.post<any>(`${this.url}project/create/${userId}`, data)
+      .pipe(catchError(err => this.base.errorHandler(err)));
+  }
   // 2. Create new project (multipart form-data)
   createProjectt(userId: number, project: any, image?: File): Observable<any> {
     const formData = new FormData();
@@ -63,7 +63,7 @@ createProject(userId: number, data: FormData): Observable<any> {
     );
   }
 
-  
+
   // 2. Get all projects for a user
   getAllProjectsByStatus(userId: number, includeTasks: boolean = false): Observable<any> {
     return this.http.get<any>(
@@ -75,7 +75,7 @@ createProject(userId: number, data: FormData): Observable<any> {
 
 
   // 3. Get project details
-  getProjectDetail( userId: number, projectId: number): Observable<any> {
+  getProjectDetail(userId: number, projectId: number): Observable<any> {
     return this.http.get<any>(`${this.url}project/${projectId}/${userId}`)
       .pipe(catchError(err => this.base.errorHandler(err)));
   }
@@ -111,6 +111,10 @@ createProject(userId: number, data: FormData): Observable<any> {
     return this.http.delete<any>(`${this.url}project/remove/${projectId}/${userId}/${targetUserId}`)
       .pipe(catchError(err => this.base.errorHandler(err)));
   }
+  updateProjectStatus(projectID: number, newStatus: string, userId: number): Observable<any> {
+    return this.http.put<any>(`${this.url}project/status/update/${projectID}/${newStatus}/${userId}`, {})
+      .pipe(catchError(err => this.base.errorHandler(err)));
+  }
 
   // 8. Get all users in a project
   getProjectUsers(projectId: number, userId: number): Observable<any> {
@@ -134,8 +138,8 @@ createProject(userId: number, data: FormData): Observable<any> {
 
 
   // 1. Create a new task (project_id is required)
-  createTask(projectId: number, userId: number, data: any): Observable<any> {
-    return this.http.post<any>(`${this.url}task/create/${projectId}/${userId}`, data)
+  createTask( userId: number, data: any): Observable<any> {
+    return this.http.post<any>(`${this.url}task/create/${userId}`, data)
       .pipe(catchError(err => this.base.errorHandler(err)));
   }
 

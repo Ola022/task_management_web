@@ -5,6 +5,7 @@ import { AppService } from '../../../app.service';
 import { Constant } from '../../../resources/constants';
 import { VConfirmationComponent } from '../../v-confirmation/v-confirmation.component';
 import { Router } from '@angular/router';
+import { TaskConfirmDialogComponent } from '../task-confirm-dialog/task-confirm-dialog.component';
 
 @Component({
   selector: 'app-project',
@@ -23,6 +24,7 @@ export class ProjectComponent implements OnInit {
   allTasks: any[] = []
   users: any[] = [];
   selectStatus = 'active'
+  status = '';
   filteredProjects: any[] = [];  // filtered list
 
   constructor(
@@ -111,7 +113,29 @@ export class ProjectComponent implements OnInit {
         }
       });
   }
-
+  getOppStatus(status: string){
+    if(status == 'active')
+      return 'Inactive'
+    else return 'Active'
+    
+  }
+  
+    openDialog(moveto: string, task: any) {
+      moveto = this.getOppStatus(moveto).toLowerCase()
+      let id = task?.id
+      const dialogRef = this.dialog.open(TaskConfirmDialogComponent, {
+        width: '400px',
+        data: { 'action': 'change_status', 'moveto': moveto, 'taskid': id, 'userID': this.userId }
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.getAllProjects();
+          this.app.snackbar.open('Project Status Updated to ' + moveto, 'Close', { duration: 3000 });
+        }
+      });
+    }
+  
   // ADD
   openAddProjectDialog(): void {
 
